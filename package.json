@@ -1,6 +1,6 @@
 {
   "name": "ttk-tool",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -26,6 +26,7 @@
   },
   "dependencies": {
     "chalk": "^2.3.2",
+    "babel-runtime": "^6.26.0",
     "commander": "^2.15.1",
     "cross-spawn": "^6.0.5",
     "through2": "^2.0.3",
