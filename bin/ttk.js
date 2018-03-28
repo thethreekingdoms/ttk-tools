@@ -45,8 +45,8 @@ program
   .command('clone')
   .description('clone app files')
   .alias('c')
-  .action(function(){
-    // require('../command/stateless')()
+  .action(function(a, b, c){
+    func.clone(a, b)
   })
 program.parse(process.argv)
 

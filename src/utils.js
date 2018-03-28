@@ -6,6 +6,7 @@ import spawn from 'cross-spawn'
 import chalk from 'chalk'
 import fs from 'fs'
 import through from 'through2'
+import readline from 'readline'
 
 export function CMD (cmdStr, option){
     return new Promise(function(resolve, reject){
@@ -81,6 +82,33 @@ export function deleteFile (path){
                 console.log('删除完成')
                 resolve()
             }
+        })
+    })
+}
+
+export function haveFile (path) {
+    return new Promise(function(resolve, reject) {
+        fs.stat(`./${path}`, (err, stats)=>{
+            if( stats ){
+                resolve(true)
+            }else{
+                resolve(false)
+            }
+        })
+    })
+}
+
+
+export function prompt (question) {
+    return new Promise(function (resolve, reject) {
+        const res = readline.createInterface({
+            input: process.stdin,
+            output: process.stdout
+        })
+        
+        res.question(question, (ans) => {
+            resolve(ans)
+            res.close()
         })
     })
 }
