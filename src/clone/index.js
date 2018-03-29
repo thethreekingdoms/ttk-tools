@@ -4,7 +4,7 @@ import vfs from 'vinyl-fs'
 import path, { resolve } from 'path'
 import through from 'through2'
 
-import { mkdir, copyFile, haveFile, prompt } from '../utils'
+import { mkdir, copyFile, haveFile, prompt, getInput } from '../utils'
 import edit from './edit'
 import isExistApp from './isExistApp'
 import editAppName from './editAppName'
@@ -26,12 +26,18 @@ async function checkPath (path) {
             return result
         }
     }
-    
-    
 }
 
 
-async function clone (cloneApp, path, name) {
+async function clone (cloneApp, path) {
+    if( typeof(cloneApp) != 'string' ){
+        console.log(chalk.yellowBright('你没有输入clone的app！'))
+        cloneApp = await getInput('请输入clone的app：')
+    }
+    if( typeof(path) != 'string' ){
+        console.log(chalk.yellowBright('你没有输入clone到指定的路径！'))
+        path = await getInput('请输入路径：')
+    }
     console.log('检查该路径下是否已经存在app...')
     path = await checkPath(path)
     console.log(path)
@@ -44,6 +50,8 @@ async function clone (cloneApp, path, name) {
     const cloneResult = await spawn.sync('npm', ['install', cloneApp], {cwd: join(process.cwd()), stdio: 'inherit' })
     if( cloneResult.error ){
         console.log(chalk.redBright(cloneResult.error))
+        console.log(chalk.redBright('安装失败，请检查改app是否已经发布在npm上！'))
+        return process.exit()
     }
     
     const res3 = await copyFile(

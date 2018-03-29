@@ -2,7 +2,7 @@ const vfs = require('vinyl-fs')
 const through = require('through2')
 
 
-vfs.src(['./output/**'])
+vfs.src(['./output/**','./output/.*','./output/.*/**'])
     .pipe(through.obj(function(file, enc, cb){
         this.push(file)
         cb()

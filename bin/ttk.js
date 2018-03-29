@@ -11,9 +11,9 @@ program
   .usage('<command>')
 
 program
-  .command('website')
+  .command('new')
   .description('create website project')
-  .alias('w')
+  .alias('n')
   .action(function(params){
     func.website(params)
   })
@@ -47,6 +47,13 @@ program
   .alias('c')
   .action(function(a, b, c){
     func.clone(a, b)
+  })
+program
+  .command('compile')
+  .description('compile the project')
+  .alias('cp')
+  .action(function(){
+    func.compile()
   })
 program.parse(process.argv)
 

@@ -8,11 +8,9 @@ sudo npm i -g ttk-tool
 
 
 ```
-ttk w myproject 
-```
-或者
-```
-ttk website myproject
+ttk new myproject 
+//或者
+ttk n myproject
 ```
 
 ### clone app
@@ -22,3 +20,4 @@ ttk c ttk-edf-app-login[/*npm 上已经发布过的app项目*/] apps/edf/ttk-edf
 // 或者
 ttk clone ttk-edf-app-login apps/edf/ttk-edf-app-login
 ```
+

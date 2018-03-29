@@ -76,7 +76,7 @@ export function deleteFile (path){
         console.log('正在删除文件。。。。。')
         fs.unlink(path, (err) => {
             if(err){
-                console.log(chalk.redBright(err))
+                console.log(err)
                 resolve(err)
             }else{
                 console.log('删除完成')
@@ -98,7 +98,6 @@ export function haveFile (path) {
     })
 }
 
-
 export function prompt (question) {
     return new Promise(function (resolve, reject) {
         const res = readline.createInterface({
@@ -111,4 +110,14 @@ export function prompt (question) {
             res.close()
         })
     })
+}
+
+export async function getInput(warn){
+    while (true){
+        console.log(chalk.yellowBright('你的输入为空!'))
+        const res  = await prompt(warn)
+        if( res ){
+            return res
+        }
+    }
 }

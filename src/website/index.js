@@ -1,5 +1,5 @@
 import chalk from 'chalk'
-import { mkdir, copyFile } from '../utils'
+import { mkdir, copyFile, getInput } from '../utils'
 
 import spawn from 'cross-spawn'
 import vfs from 'vinyl-fs'
@@ -8,6 +8,10 @@ import through from 'through2'
 const { join, basename } = path
 const installPackge = 'ttk-app-core'
 async function website (projectName) {
+    if( typeof(projectName) != 'string' ){
+        projectName = await getInput('请输入项目名称：')
+        console.log(projectName)
+    }
     const res = await mkdir(projectName)
     console.log(chalk.greenBright('创建项目文件夹'))
     if( res ){
@@ -26,6 +30,8 @@ async function website (projectName) {
         projectName,
         [
             `./${projectName}/node_modules/${installPackge}/**`,
+            `./${projectName}/node_modules/${installPackge}/.*`,
+            `./${projectName}/node_modules/${installPackge}/.*/**`,
             `!./${projectName}/node_modules/${installPackge}/node_modules`
         ]
     )
