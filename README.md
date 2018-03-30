@@ -1,4 +1,4 @@
-# ttk-tools
+# ttk-tool
 
 ### 安装
 ```
