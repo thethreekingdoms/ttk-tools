@@ -135,3 +135,86 @@ export function readDir (path) {
         })
     })
 }
+
+export function edit(path) {
+    return new Promise(function(resolve, reject){
+        const namearr = path.split('/')
+        const name = namearr[namearr.length - 1]
+        const nameStr = name.replace(/-/g, '_')
+        fs.readFile('./index.js', (err, data) => {
+            const str = data.toString()
+            const index = str.replace(/const.*app.*=.*{/g, function(a){
+            const str = 
+`import ${nameStr} from './${path}' 
+${a}
+    [${nameStr}.name]: ${nameStr},`
+                return str
+            })
+            fs.createWriteStream('./index.js').write(index, 'utf8', (err)=>{
+                resolve()
+            })
+        });
+    })
+}
+
+
+export function editAppName (path) {
+    return new Promise(function(resolve, reject){
+        const namearr = path.split('/')
+        const name = namearr[namearr.length - 1]
+        const nameStr = name
+        fs.readFile(`./${path}/index.js`, (err, data) => {
+            const str = data.toString()
+            const editStr= str.replace(/name:.*,/, function(a) {
+                console.log(a)
+               return `name: '${nameStr}',` 
+            })
+            fs.createWriteStream(`./${path}/index.js`).write(editStr, 'utf8', (err)=>{
+                resolve(true)
+            })
+        });
+    })
+}
+
+export function editmock (path) {
+    return new Promise(function(resolve, reject){
+        fs.readFile('./mock.js', (err, data) => {
+            if( err ){
+                console.log(chalk.redBright('没有发现./mock.js'))
+            }
+            const str = data.toString()
+            const resultStr = str+`
+import './${path}/mock.js';
+`
+            fs.createWriteStream('./mock.js').write(resultStr, 'utf8', (err)=>{
+              if( err ){
+                  resolve(false)
+                  console.log(chalk.redBright('修改./mock.js失败'))
+                  return
+              }
+              resolve(true)
+            })
+        });
+    })
+}
+
+export function editstyle (path) {
+    return new Promise(function(resolve, reject){
+        fs.readFile('./assets/styles/apps.less', (err, data) => {
+            if( err ){
+                console.log(chalk.redBright('没有发现./assets/styles/apps.less'))
+            }
+            const str = data.toString()
+            const resultStr = str+`
+@import '../../${path}/style.less';
+`
+            fs.createWriteStream('./assets/styles/apps.less').write(resultStr, 'utf8', (err)=>{
+              if( err ){
+                  resolve(false)
+                  console.log(chalk.redBright('修改./assets/styles/apps.less失败'))
+              }
+              resolve(true)
+            })
+        });
+    })
+}

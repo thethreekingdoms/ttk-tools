@@ -22,8 +22,9 @@ program
   .command('app')
   .description('create app files')
   .alias('a')
-  .action(function(){
+  .action(function(a){
     // require('../command/model')()
+    func.createApp(a)
   })
 
 program

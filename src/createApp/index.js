@@ -4,15 +4,14 @@ import vfs from 'vinyl-fs'
 import path, { resolve } from 'path'
 import through from 'through2'
 
-import { mkdir, copyFile, haveFile, prompt, getInput, readDir, deleteFile } from '../utils'
-import edit from './edit'
-import isExistApp from './isExistApp'
-import editAppName from './editAppName'
-import editmock from './editmock'
-import editstyle from './editstyle'
+import {
+    mkdir, copyFile, haveFile, prompt, getInput, 
+    readDir, edit, editAppName, editmock, editstyle,
+    deleteFile
+} from '../utils'
 
 const { join, basename } = path
-
+const cloneApp = 'ttk-app-init-demo'
 async function checkPath (path) {
     let result = path
     while (true) {
@@ -26,29 +25,7 @@ async function checkPath (path) {
     }
 }
 
-async function JoinApp (path) {
-    const res = await haveFile(`${path}/index.js`)
-    if( !res ){
-        return
-    }
-    const editmockRes = await editmock(path)
-    if( editmockRes ) {
-        console.log(chalk.greenBright('修改mock.js成功！'))
-    }
-    const editstyleres = await editstyle(path)
-    if( editstyleres ) {
-        console.log(chalk.greenBright('修改app.less成功！'))
-    }
-    console.log('修改根目录下的index.js文件。')
-    const editResult = await edit(path)
-    return true
-}
-
-async function clone (cloneApp, path) {
-    if( typeof(cloneApp) != 'string' ){
-        console.log(chalk.yellowBright('你没有输入clone的app！'))
-        cloneApp = await getInput('请输入clone的app：')
-    }
+async function createApp ( path) {
     if( typeof(path) != 'string' ){
         console.log(chalk.yellowBright('你没有输入clone到指定的路径！'))
         path = await getInput('请输入路径：')
@@ -65,7 +42,7 @@ async function clone (cloneApp, path) {
     const cloneResult = await spawn.sync('npm', ['install', cloneApp], {cwd: join(process.cwd()), stdio: 'inherit' })
     if( cloneResult.error ){
         console.log(chalk.redBright(cloneResult.error))
-        console.log(chalk.redBright('安装失败，请检查改app是否已经发布在npm上！'))
+        console.log(chalk.redBright('下载ttk-app-init-demo失败！'))
         return process.exit()
     }
     
@@ -95,12 +72,6 @@ async function clone (cloneApp, path) {
     console.log('修改根目录下的index.js文件。')
     const editResult = await edit(path)
 
-    const apps = await readDir(`./${path}/apps`)
-    for( let i = 0; i < apps.length ; i++ ){
-        const appItemPath = apps[i]
-        console.log(`${path}/apps/${appItemPath}`)
-        const res = await JoinApp(`${path}/apps/${appItemPath}`)
-    }
     console.log('删除dist文件夹')
     const delRes = await deleteFile('./dist')
     if( !delRes ){
@@ -117,4 +88,4 @@ async function clone (cloneApp, path) {
 
     process.exit()
 }
-export default clone
+export default createApp
