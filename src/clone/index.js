@@ -4,7 +4,7 @@ import vfs from 'vinyl-fs'
 import path, { resolve } from 'path'
 import through from 'through2'
 
-import { mkdir, copyFile, haveFile, prompt, getInput } from '../utils'
+import { mkdir, copyFile, haveFile, prompt, getInput, readDir } from '../utils'
 import edit from './edit'
 import isExistApp from './isExistApp'
 import editAppName from './editAppName'
@@ -13,7 +13,6 @@ import editStyle from './editstyle'
 import editstyle from './editstyle';
 
 const { join, basename } = path
-
 
 async function checkPath (path) {
     let result = path
@@ -28,6 +27,23 @@ async function checkPath (path) {
     }
 }
 
+async function JoinApp (path) {
+    const res = await haveFile(`${path}/index.js`)
+    if( !res ){
+        return
+    }
+    const editmockRes = await editmock(path)
+    if( editmockRes ) {
+        console.log(chalk.greenBright('修改mock.js成功！'))
+    }
+    const editstyleres = await editstyle(path)
+    if( editstyleres ) {
+        console.log(chalk.greenBright('修改app.less成功！'))
+    }
+    console.log('修改根目录下的index.js文件。')
+    const editResult = await edit(path)
+    return true
+}
 
 async function clone (cloneApp, path) {
     if( typeof(cloneApp) != 'string' ){
@@ -58,6 +74,8 @@ async function clone (cloneApp, path) {
         `${path}`,
         [
             `./node_modules/${cloneApp}/**`,
+            `!./node_modules/${cloneApp}/package.json`,
+            `!./node_modules/${cloneApp}/README.md`,
             `!./node_modules/${cloneApp}/node_modules`
         ]
     )
@@ -77,6 +95,20 @@ async function clone (cloneApp, path) {
     }
     console.log('修改根目录下的index.js文件。')
     const editResult = await edit(path)
+
+    const apps = await readDir(`./${path}/apps`)
+    for( let i = 0; i < apps.length ; i++ ){
+        const appItemPath = apps[i]
+        console.log(`${path}/apps/${appItemPath}`)
+        const res = await JoinApp(`${path}/apps/${appItemPath}`)
+    }
+    spawn.sync(
+        'npm', 
+        ['start'], 
+        {cwd: join(process.cwd()), stdio: 'inherit' }
+    )
+    const runRes = await 
+
     process.exit()
 }
 export default clone

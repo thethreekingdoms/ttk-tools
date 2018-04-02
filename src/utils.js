@@ -121,3 +121,17 @@ export async function getInput(warn){
         }
     }
 }
+
+export function readDir (path) {
+    return new Promise(function(resolve, reject) {
+        fs.readdir(path, (err, data) => {
+            if( err ){
+                console.log(err)
+                resolve([])
+            }else{
+                console.log(data)
+                resolve(data)
+            }
+        })
+    })
+}

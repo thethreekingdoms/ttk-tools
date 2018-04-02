@@ -1,7 +1,7 @@
 {
   "name": "ttk-tool",
-  "version": "1.0.1",
-  "description": "",
+  "version": "1.0.4",
+  "description": "```\r sudo npm i -g ttk-tool\r ```\r ###创建website",
   "main": "index.js",
   "scripts": {
     "build": "babel -d lib/ src/",
@@ -31,5 +31,17 @@
     "cross-spawn": "^6.0.5",
     "through2": "^2.0.3",
     "vinyl-fs": "^3.0.2"
-  }
+  },
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thethreekingdoms/ttk-tools.git"
+  },
+  "bugs": {
+    "url": "https://github.com/thethreekingdoms/ttk-tools/issues"
+  },
+  "homepage": "https://github.com/thethreekingdoms/ttk-tools#readme"
 }

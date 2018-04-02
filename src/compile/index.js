@@ -6,9 +6,6 @@ const { join } = path
 
 
 async function  compile(params) {
-    console.log('打包公共资源文件。')
-    const res1 = await spawn.sync('npm', ['run', 'dll'], {cwd: join(process.cwd()), stdio: 'inherit' })
-
     console.log('删除dist文件夹')
     const res2 = await deleteFile('./dist')
     if( !res2 ){
