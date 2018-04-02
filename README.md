@@ -1,4 +1,4 @@
-# ttk-tools
+# ttk-tool
 
 ### 安装
 ```
@@ -16,8 +16,8 @@ ttk n myproject
 ### clone app
 
 ```
-ttk c ttk-edf-app-login[/*npm 上已经发布过的app项目*/] apps/edf/ttk-edf-app-login [/*clone app 到指定的路径*/]
+ttk c ttk-edf-app-login[/*npm 上已经发布过的app项目*/] edf/ttk-edf-app-login [/*clone app 到指定的路径*/]
 // 或者
-ttk clone ttk-edf-app-login apps/edf/ttk-edf-app-login
+ttk clone ttk-edf-app-login edf/ttk-edf-app-login
 ```
 
