@@ -44,7 +44,7 @@ async function JoinApp (path) {
     return true
 }
 
-async function clone (cloneApp, path) {
+async function clone (cloneApp, path, noExit) {
     if( typeof(cloneApp) != 'string' ){
         console.log(chalk.yellowBright('你没有输入clone的app！'))
         cloneApp = await getInput('请输入clone的app：')
@@ -102,6 +102,9 @@ async function clone (cloneApp, path) {
         const res = await JoinApp(`${path}/apps/${appItemPath}`)
     }
     console.log(chalk.greenBright('完成'))
-    process.exit()
+    if( noExit === true ){
+        return true
+    }
+    return process.exit()
 }
 export default clone

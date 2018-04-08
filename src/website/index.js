@@ -8,6 +8,7 @@ import through from 'through2'
 const { join, basename } = path
 const installPackge = 'ttk-app-core'
 async function website (projectName) {
+    console.log('开始创建', projectName)
     if( typeof(projectName) != 'string' ){
         projectName = await getInput('请输入项目名称：')
         console.log(projectName)
@@ -21,6 +22,7 @@ async function website (projectName) {
     console.log(chalk.gray('下载中..........'))
     // const res2 =await CMD(`npm i ${installPackge}`, {cwd: join(process.cwd(), projectName)})
     const res2 = await spawn.sync('npm', ['install', installPackge], {cwd: join(process.cwd(), projectName), stdio: 'inherit' })
+    console.log('res2', res2.error)
     if( res2.error ){
         console.log(chalk.redBright(res2.error))
         console.log(chalk.redBright('下载失败！'))

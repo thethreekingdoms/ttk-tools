@@ -15,6 +15,7 @@ program
   .description('create website project')
   .alias('n')
   .action(function(params){
+    console.log('params', params)
     func.website(params)
   })
 
@@ -56,8 +57,6 @@ program
   .action(function(){
     func.compile()
   })
-program.parse(process.argv)
-
 program
   .command('update')
   .description('update the app')
@@ -65,7 +64,17 @@ program
   .action(function(app, path){
     func.update(app, path)
   })
+
+program
+  .command('apps')
+  .description('clone apps')
+  .alias('as')
+  .action(function(path, ...apps){
+    func.cloneApps(path, apps)
+  })
 program.parse(process.argv)
+
+
 
 if(!program.args.length){
   program.help()
