@@ -71,19 +71,22 @@ export function rename (oldName, newName){
     })
 }
 
-export function deleteFile (path){
-    return new Promise(function(resolve, reject){
-        console.log('正在删除文件。。。。。')
-        fs.unlink(path, (err) => {
-            if(err){
-                console.log(err)
-                resolve(err)
-            }else{
-                console.log('删除完成')
-                resolve()
+
+export function deleteFile (path) {
+    var files = [];
+    if( fs.existsSync(path) ) {
+        files = fs.readdirSync(path);
+        files.forEach(function(file,index){
+            var curPath = path + "/" + file
+            console.log(chalk.yellowBright(`正在删除${curPath}`))
+            if(fs.statSync(curPath).isDirectory()) { // recurse
+                deleteFile(curPath)
+            } else { // delete file
+                fs.unlinkSync(curPath);
             }
-        })
-    })
+        });
+        fs.rmdirSync(path);
+    }
 }
 
 export function haveFile (path) {

@@ -2,7 +2,6 @@ import chalk from 'chalk'
 import spawn from 'cross-spawn'
 import vfs from 'vinyl-fs'
 import path, { resolve } from 'path'
-import through from 'through2'
 
 import {
     mkdir, copyFile, haveFile, prompt, getInput, 
@@ -71,21 +70,7 @@ async function createApp ( path) {
     }
     console.log('修改根目录下的index.js文件。')
     const editResult = await edit(path)
-
-    console.log('删除dist文件夹')
-    const delRes = await deleteFile('./dist')
-    if( !delRes ){
-        console.log(chalk.greenBright('删除成功'))
-    }
-    const releaseRes = await spawn.sync('webpack', [
-        '--colors',
-        '--progress',
-        '--display-error-details',
-        '--config',
-        'webpack.config.prd.js'
-    ], {cwd: join(process.cwd()), stdio: 'inherit' })
-    console.log(chalk.greenBright('编译完成！'))
-
+    console.log(chalk.greenBright('完成'))
     process.exit()
 }
 export default createApp

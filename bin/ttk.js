@@ -58,6 +58,15 @@ program
   })
 program.parse(process.argv)
 
+program
+  .command('update')
+  .description('update the app')
+  .alias('up')
+  .action(function(app, path){
+    func.update(app, path)
+  })
+program.parse(process.argv)
+
 if(!program.args.length){
   program.help()
 }

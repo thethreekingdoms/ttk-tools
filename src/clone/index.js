@@ -101,20 +101,7 @@ async function clone (cloneApp, path) {
         console.log(`${path}/apps/${appItemPath}`)
         const res = await JoinApp(`${path}/apps/${appItemPath}`)
     }
-    console.log('删除dist文件夹')
-    const delRes = await deleteFile('./dist')
-    if( !delRes ){
-        console.log(chalk.greenBright('删除成功'))
-    }
-    const releaseRes = await spawn.sync('webpack', [
-        '--colors',
-        '--progress',
-        '--display-error-details',
-        '--config',
-        'webpack.config.prd.js'
-    ], {cwd: join(process.cwd()), stdio: 'inherit' })
-    console.log(chalk.greenBright('编译完成！'))
-
+    console.log(chalk.greenBright('完成'))
     process.exit()
 }
 export default clone
