@@ -1,9 +1,9 @@
 import clone from '../clone'
 import chalk from 'chalk'
-async function  cloneApps(path, apps) {
-    for( const i of apps ){
-        if( typeof(i) == 'string' ){
-            console.log(chalk.greenBright(`正在克隆${i}`))
+async function cloneApps(path, apps) {
+    for (const i of apps) {
+        if (typeof (i) == 'string') {
+            console.log(chalk.greenBright(`正在克隆app - ${i}`))
             await clone(i, `${path}/${i}`, true)
         }
     }

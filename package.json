@@ -1,11 +1,11 @@
 {
   "name": "ttk-tool",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "```\r sudo npm i -g ttk-tool\r ```\r ###创建website",
   "main": "index.js",
   "scripts": {
     "build": "babel -d lib/ src/",
-    "commit": "git add . && git commit -m 'zlj' &&  git push -u origin master",
+    "commit": "git add . && git commit -m 'ttk' &&  git push -u origin master",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
