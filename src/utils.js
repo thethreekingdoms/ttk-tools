@@ -222,7 +222,7 @@ export function editstyle(path) {
     })
 }
 
-function getAllAppPath(path, arr) {
+function getAppPath(path, arr) {
     const res = fs.readdirSync(path)
     if( res.includes('index.js') ){
         arr.push(path)
@@ -230,7 +230,7 @@ function getAllAppPath(path, arr) {
     res.forEach(item => {
         const currentPath = `${path}/${item}`
         if( fs.statSync(currentPath).isDirectory() ){
-            getAllAppPath(currentPath, arr)
+            getAppPath(currentPath, arr)
         } 
     })
 }
