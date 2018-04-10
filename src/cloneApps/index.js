@@ -7,6 +7,7 @@ async function  cloneApps(path, apps) {
             await clone(i, `${path}/${i}`, true)
         }
     }
+    process.exit()
 }
 
 export default cloneApps

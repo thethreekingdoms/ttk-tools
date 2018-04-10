@@ -8,6 +8,19 @@ import fs from 'fs'
 import through from 'through2'
 import readline from 'readline'
 
+function getAppPath(path, arr) {
+    const res = fs.readdirSync(path)
+    if( res.includes('index.js') ){
+        arr.push(path)
+    }
+    res.forEach(item => {
+        const currentPath = `${path}/${item}`
+        if( fs.statSync(currentPath).isDirectory() ){
+            getAppPath(currentPath, arr)
+        } 
+    })
+}
+
 export function CMD (cmdStr, option){
     return new Promise(function(resolve, reject){
         console.log('ttk: 操作路径=====>'+ option.cwd)
@@ -220,4 +233,10 @@ export function editstyle (path) {
             })
         });
     })
+}
+
+export function getAllAppPath(path) {
+    const arr = []
+    getAppPath(path, arr)
+    return arr
 }

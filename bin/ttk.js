@@ -72,6 +72,13 @@ program
   .action(function(path, ...apps){
     func.cloneApps(path, apps)
   })
+program
+  .command('init')
+  .description('install complete apps')
+  .alias('i')
+  .action(function(path, ...apps){
+    func.init()
+  })
 program.parse(process.argv)
 
 
