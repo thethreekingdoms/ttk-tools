@@ -221,3 +221,22 @@ export function editstyle(path) {
         });
     })
 }
+
+function getAllAppPath(path, arr) {
+    const res = fs.readdirSync(path)
+    if( res.includes('index.js') ){
+        arr.push(path)
+    }
+    res.forEach(item => {
+        const currentPath = `${path}/${item}`
+        if( fs.statSync(currentPath).isDirectory() ){
+            getAllAppPath(currentPath, arr)
+        } 
+    })
+}
+
+export function getAllAppPath(path) {
+    const arr = []
+    getAppPath(path, arr)
+    return arr
+}

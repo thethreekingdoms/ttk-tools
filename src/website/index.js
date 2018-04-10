@@ -1,12 +1,22 @@
 import chalk from 'chalk'
-import { mkdir, copyFile, getInput } from '../utils'
-
 import spawn from 'cross-spawn'
 import vfs from 'vinyl-fs'
 import path, { resolve } from 'path'
 import through from 'through2'
+
+import { mkdir, copyFile, getInput } from '../utils'
+
 const { join, basename } = path
 const installPackge = 'ttk-app-core'
+
+const basics = [
+    'ttk-edf-app-portal',
+    'ttk-edf-app-login',
+    'ttk-edf-app-root',
+    'ttk-edf-app-home',
+    'ttk-edf-app-portal-menu'
+]
+
 async function website (projectName) {
     console.log('开始创建', projectName)
     if( typeof(projectName) != 'string' ){

@@ -13,10 +13,13 @@ import editstyle from './editstyle'
 
 const { join, basename } = path
 
-async function checkPath (path) {
+async function checkPath (path, noExit) {
     let result = path
     while (true) {
         const flag = await haveFile(result)
+        if( flag && noExit ){
+            return true
+        }
         if( flag ){
             console.log(chalk.yellowBright('该路径下已经存在app!'))
             result = await prompt('请输入新的路径：')
@@ -54,7 +57,11 @@ async function clone (cloneApp, path, noExit) {
         path = await getInput('请输入路径：')
     }
     console.log('检查该路径下是否已经存在app...')
-    path = await checkPath(path)
+    path = await checkPath(path, noExit)
+    if( path === true ){
+        console.log(chalk.yellowBright(`${path}路径已经存在执行跳过`))
+        return true
+    }
     console.log(path)
     // console.log(haveFileResult)
 

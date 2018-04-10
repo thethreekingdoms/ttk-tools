@@ -73,12 +73,20 @@ program
     func.cloneApps(path, apps)
   })
 
-  program
+program
   .command('reset')
   .description('reset the project folder')
   .alias('re')
   .action(function () {
     func.reset()
+  })
+
+program
+  .command('init')
+  .description('install complete apps')
+  .alias('i')
+  .action(function(path, ...apps){
+    func.init()
   })
 program.parse(process.argv)
 
