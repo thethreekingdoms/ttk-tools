@@ -15,3 +15,6 @@ function getPath(path, arr) {
 
 getPath('.', pathArr)
 console.log(pathArr)
+
+const a = fs.existsSync('./aaaaaaaaa.js')
+console.log(a)
