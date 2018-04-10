@@ -4,5 +4,6 @@ import compile from './compile'
 import createApp from './createApp'
 import update from './update'
 import cloneApps from './cloneApps'
+import reset from './reset'
 
-export default {website, clone, compile, createApp, update, cloneApps}
+export default { website, clone, compile, createApp, update, cloneApps, reset }
