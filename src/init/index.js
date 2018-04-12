@@ -12,7 +12,7 @@ function getApps () {
 
 async function  init() {
     const { data } = await getApps()
-    for( const i of apps ){
+    for( const i of data ){
         if( typeof(i) == 'string' ){
             console.log(chalk.greenBright(`正在克隆${i}`))
             await clone(i, `${path}/${i}`, true)
