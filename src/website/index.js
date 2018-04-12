@@ -33,7 +33,7 @@ async function website (projectName) {
     // const res2 =await CMD(`npm i ${installPackge}`, {cwd: join(process.cwd(), projectName)})
     const res2 = await spawn.sync('npm', ['install', installPackge], {cwd: join(process.cwd(), projectName), stdio: 'inherit' })
     console.log('res2', res2.error)
-    if( res2.error ){
+    if( res2.error || res2.status != 0 ){
         console.log(chalk.redBright(res2.error))
         console.log(chalk.redBright('下载失败！'))
         process.exit()

@@ -18,7 +18,7 @@ async function update(updateApp, path) {
     const cloneResult = await spawn.sync('npm', ['update', updateApp], {cwd: join(process.cwd()), stdio: 'inherit' })
     console.log('删除dist文件夹')
     const deleteFileRes = await deleteFile(`./${path}`)
-    if( cloneResult.error ){
+    if( cloneResult.error || cloneResult.status != 0 ){
         console.log(chalk.redBright(cloneResult.error))
         console.log(chalk.redBright('安装失败，请检查改app是否已经发布在npm上！'))
         return process.exit()

@@ -70,10 +70,15 @@ async function clone (cloneApp, path, noExit) {
     //     path = await prompt('请输入新的路径：')
     // }
     const cloneResult = await spawn.sync('npm', ['install', cloneApp], {cwd: join(process.cwd()), stdio: 'inherit' })
-    if( cloneResult.error ){
+    if( cloneResult.status !=0 ||  cloneResult.error ){
         console.log(chalk.redBright(cloneResult.error))
         console.log(chalk.redBright('安装失败，请检查改app是否已经发布在npm上！'))
-        return process.exit()
+        if( noExit ){
+            return
+        }else{
+            return process.exit()
+        }
+        
     }
     
     const res3 = await copyFile(

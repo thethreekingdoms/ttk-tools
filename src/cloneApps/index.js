@@ -7,6 +7,7 @@ async function cloneApps(path, apps) {
             await clone(i, `${path}/${i}`, true)
         }
     }
+    console.log(chalk.greenBright('全部克隆完成！！！！'))
     process.exit()
 }
 

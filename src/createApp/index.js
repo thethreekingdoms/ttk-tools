@@ -39,7 +39,7 @@ async function createApp ( path) {
     //     path = await prompt('请输入新的路径：')
     // }
     const cloneResult = await spawn.sync('npm', ['install', cloneApp], {cwd: join(process.cwd()), stdio: 'inherit' })
-    if( cloneResult.error ){
+    if( cloneResult.error || cloneResult.status != 0 ){
         console.log(chalk.redBright(cloneResult.error))
         console.log(chalk.redBright('下载ttk-app-init-demo失败！'))
         return process.exit()
