@@ -82,9 +82,9 @@ program
   })
 
 program
-  .command('init')
+  .command('demo')
   .description('install complete apps')
-  .alias('i')
+  .alias('de')
   .action(function(path, ...apps){
     func.init()
   })

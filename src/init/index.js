@@ -1,26 +1,17 @@
 import clone from '../clone'
 import chalk from 'chalk'
+import request from 'request'
 const path = 'apps/edf'
-const apps = [
-    'ttk-edf-app-portal',
-    'ttk-table-app-simplerpt',
-    'ttk-edf-app-login',
-    'ttk-table-app-list',
-    'ttk-edf-app-root',
-    'ttk-edf-app-productlist',
-    'ttk-voucher-app-document',
-    'ttk-table-app-simplelist',
-    'ttk-edf-app-role-auth',
-    'ttk-edf-app-saleorder',
-    'ttk-table-app-rpt',
-    'ttk-edf-app-home',
-    'ttk-edf-app-mailshare',
-    'ttk-edf-app-operation',
-    'ttk-edf-app-stockcard',
-    'ttk-edf-app-stockcard',
-    'ttk-edf-app-portal-menu'
-]
+function getApps () {
+    return new Promise(function(resolve, reject) {
+        request('https://thethreekingdoms.github.io/demo.json', (error, response, body)=>{
+            resolve(JSON.parse(body))
+        })
+    })
+}
+
 async function  init() {
+    const { data } = await getApps()
     for( const i of apps ){
         if( typeof(i) == 'string' ){
             console.log(chalk.greenBright(`正在克隆${i}`))
