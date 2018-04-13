@@ -26,10 +26,12 @@ async function checkPath (path) {
 
 async function createApp ( path) {
     if( typeof(path) != 'string' ){
-        console.log(chalk.yellowBright('你没有输入clone到指定的路径！'))
-        path = await getInput('请输入路径：')
+        console.log(chalk.yellowBright('你没有输入创建的app名字！'))
+        path = await getInput('请输入创建的app名称：')
     }
     console.log('检查该路径下是否已经存在app...')
+    // 默认在apps文件夹下创建
+    path = `apps/${path}`
     path = await checkPath(path)
     console.log(path)
     // console.log(haveFileResult)

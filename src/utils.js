@@ -117,8 +117,10 @@ export function prompt(question) {
 
 export async function getInput(warn) {
     while (true) {
-        console.log(chalk.yellowBright('你的输入为空!'))
         const res = await prompt(warn)
+        if( !res ){
+            console.log(chalk.yellowBright('你的输入为空!'))
+        }
         if (res) {
             return res
         }
@@ -239,4 +241,15 @@ export function getAllAppPath(path) {
     const arr = []
     getAppPath(path, arr)
     return arr
+}
+
+export async function inputYN() {
+    while (true) {
+        const res = await getInput('是否需要安装依赖(Y/N)?')
+        if(res && res.toUpperCase()== 'YES' ||  res && res.toUpperCase()== 'Y'){
+            return true
+        }else if( res && res.toUpperCase()== 'NO' ||  res && res.toUpperCase()== 'N' ){
+            return false
+        }
+    }
 }

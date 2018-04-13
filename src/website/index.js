@@ -4,7 +4,7 @@ import vfs from 'vinyl-fs'
 import path, { resolve } from 'path'
 import through from 'through2'
 
-import { mkdir, copyFile, getInput } from '../utils'
+import { mkdir, copyFile, getInput, inputYN } from '../utils'
 
 const { join, basename } = path
 const installPackge = 'ttk-app-core'
@@ -18,7 +18,7 @@ const basics = [
 ]
 
 async function website (projectName) {
-    console.log('开始创建', projectName)
+    console.log('开始创建')
     if( typeof(projectName) != 'string' ){
         projectName = await getInput('请输入项目名称：')
         console.log(projectName)
@@ -48,6 +48,10 @@ async function website (projectName) {
         ]
     )
     console.log(chalk.greenBright('成功创建项目'))
+    const YNres = await inputYN()
+    if( !YNres ) {
+        return process.exit()
+    }
     console.log(chalk.gray('安装依赖 npm install....'))
     // const res4 = await CMD('npm install', {cwd: join(process.cwd(), projectName)})
     const res4 = await spawn.sync('npm', ['install'], {cwd: join(process.cwd(), projectName), stdio: 'inherit' })
