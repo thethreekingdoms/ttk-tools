@@ -8,9 +8,17 @@ export default function (path) {
                 console.log(chalk.redBright('没有发现./mock.js'))
             }
             const str = data.toString()
-            const resultStr = str+`
-import './${path}/mock.js';
-`
+            let  resultStr 
+            if( str.includes('//note-end') ){
+                resultStr = str.replace(/\/\/note-end/,
+`import './${path}/mock.js';
+//note-end
+` )
+            }else{
+                resultStr = str+`
+import './${path}/mock.js';`
+            }
+            
             fs.createWriteStream('./mock.js').write(resultStr, 'utf8', (err)=>{
               if( err ){
                   resolve(false)

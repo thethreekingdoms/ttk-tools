@@ -6,7 +6,7 @@ import path, { resolve } from 'path'
 import {
     mkdir, copyFile, haveFile, prompt, getInput, 
     readDir, edit, editAppName, editmock, editstyle,
-    deleteFile
+    deleteFile, replacePreName
 } from '../utils'
 
 const { join, basename } = path
@@ -72,6 +72,7 @@ async function createApp ( path) {
     }
     console.log('修改根目录下的index.js文件。')
     const editResult = await edit(path)
+    await replacePreName(path, 'app-test')
     console.log(chalk.greenBright('完成'))
     process.exit()
 }

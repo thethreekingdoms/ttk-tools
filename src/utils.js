@@ -182,43 +182,60 @@ export function editAppName(path) {
 }
 
 export function editmock(path) {
-    return new Promise(function (resolve, reject) {
+    return new Promise(function(resolve, reject){
         fs.readFile('./mock.js', (err, data) => {
-            if (err) {
+            if( err ){
                 console.log(chalk.redBright('没有发现./mock.js'))
             }
             const str = data.toString()
-            const resultStr = str + `
-import './${path}/mock.js';
-`
-            fs.createWriteStream('./mock.js').write(resultStr, 'utf8', (err) => {
-                if (err) {
-                    resolve(false)
-                    console.log(chalk.redBright('修改./mock.js失败'))
-                    return
-                }
-                resolve(true)
+            let  resultStr 
+            if( str.includes('//note-end') ){
+                resultStr = str.replace(/\/\/note-end/,
+`import './${path}/mock.js';
+//note-end
+` )
+            }else{
+                resultStr = str+`
+import './${path}/mock.js';`
+            }
+            
+            fs.createWriteStream('./mock.js').write(resultStr, 'utf8', (err)=>{
+              if( err ){
+                  resolve(false)
+                  console.log(chalk.redBright('修改./mock.js失败'))
+                  return
+              }
+              resolve(true)
             })
         });
     })
 }
 
 export function editstyle(path) {
-    return new Promise(function (resolve, reject) {
+    return new Promise(function(resolve, reject){
         fs.readFile('./assets/styles/apps.less', (err, data) => {
-            if (err) {
+            if( err ){
                 console.log(chalk.redBright('没有发现./assets/styles/apps.less'))
             }
             const str = data.toString()
-            const resultStr = str + `
-@import '../../${path}/style.less';
+            let resultStr 
+            if( str.includes('//note-end') ){
+                resultStr = str.replace(/\/\/note-end/, 
 `
-            fs.createWriteStream('./assets/styles/apps.less').write(resultStr, 'utf8', (err) => {
-                if (err) {
-                    resolve(false)
-                    console.log(chalk.redBright('修改./assets/styles/apps.less失败'))
-                }
-                resolve(true)
+@import '../../${path}/style.less';
+//note-end`                
+
+                )
+            }else{
+                resultStr = str+`
+@import '../../${path}/style.less';`
+            }
+            fs.createWriteStream('./assets/styles/apps.less').write(resultStr, 'utf8', (err)=>{
+              if( err ){
+                  resolve(false)
+                  console.log(chalk.redBright('修改./assets/styles/apps.less失败'))
+              }
+              resolve(true)
             })
         });
     })
@@ -226,7 +243,7 @@ export function editstyle(path) {
 
 function getAppPath(path, arr) {
     const res = fs.readdirSync(path)
-    if( res.includes('index.js') ){
+    if( res.includes('index.js') && res.includes('data.js') ){
         arr.push(path)
     }
     res.forEach(item => {
@@ -252,4 +269,55 @@ export async function inputYN() {
             return false
         }
     }
+}
+
+function editAppStyle(path, name, preName) {
+    return new Promise(function(resolve, reject) {
+        fs.readFile(`./${path}/style.less`, (err, data) => {
+            if( err ){
+                console.log(chalk.redBright('没有发现./assets/styles/apps.less'))
+            }
+            const rex = new RegExp(preName, 'g')
+            const str = data.toString()
+            const resultStr = str.replace(rex, name)
+            fs.createWriteStream(`./${path}/style.less`).write(resultStr, 'utf8', (err)=>{
+              if( err ){
+                  resolve(false)
+                  console.log(chalk.redBright(`修改./${path}/style.less失败`))
+              }
+              resolve(true)
+            })
+        });
+    })
+}
+
+function editAppData(path, name, preName) {
+    return new Promise(function(resolve, reject) {
+        fs.readFile(`./${path}/data.js`, (err, data) => {
+            if( err ){
+                console.log(chalk.redBright(`没有发现./${path}/data.js`))
+            }
+            const rex = new RegExp(preName, 'g')
+            const str = data.toString()
+            const resultStr = str.replace(rex, name)
+            fs.createWriteStream(`./${path}/data.js`).write(resultStr, 'utf8', (err)=>{
+              if( err ){
+                  resolve(false)
+                  console.log(chalk.redBright(`修改./${path}/data.js失败`))
+              }
+              resolve(true)
+            })
+        });
+    })
+}
+
+export async function replacePreName(path, preName){
+    const arr = path.split('/')
+    const name = arr[arr.length-1]
+    if( name == preName || !name || !preName){
+        return 
+    }
+    await editAppStyle(path, name, preName)
+    await editAppData(path, name, preName)
+    return
 }

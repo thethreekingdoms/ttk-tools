@@ -8,9 +8,18 @@ export default function (path) {
                 console.log(chalk.redBright('没有发现./assets/styles/apps.less'))
             }
             const str = data.toString()
-            const resultStr = str+`
-@import '../../${path}/style.less';
+            let resultStr 
+            if( str.includes('//note-end') ){
+                resultStr = str.replace(/\/\/note-end/, 
 `
+@import '../../${path}/style.less';
+//note-end`                
+
+                )
+            }else{
+                resultStr = str+`
+@import '../../${path}/style.less';`
+            }
             fs.createWriteStream('./assets/styles/apps.less').write(resultStr, 'utf8', (err)=>{
               if( err ){
                   resolve(false)
