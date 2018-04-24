@@ -2,8 +2,8 @@ import chalk from 'chalk'
 import spawn from 'cross-spawn'
 import path, { resolve } from 'path'
 
-import { copyFile, haveFile, deleteFile } from '../utils'
-import editAppName from '../clone/editAppName'
+import { copyFile, haveFile, deleteFile, editAppName } from '../utils'
+// import editAppName from '../clone/editAppName'
 
 const { join, basename } = path
 
@@ -35,7 +35,7 @@ async function update(updateApp, path) {
     )
     console.log(chalk.greenBright('复制文件成功！！！'))
     console.log('修改app/index中的name...')
-    const editNameRes = await editAppName(path)
+    const editNameRes = await editAppName(path, updateApp)
     if( editNameRes ) {
         console.log(chalk.greenBright('修改app.name成功！'))
     }

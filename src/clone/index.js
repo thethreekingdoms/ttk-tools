@@ -4,10 +4,9 @@ import vfs from 'vinyl-fs'
 import path, { resolve } from 'path'
 import through from 'through2'
 
-import { mkdir, copyFile, haveFile, prompt, getInput, readDir, deleteFile } from '../utils'
+import { mkdir, copyFile, haveFile, prompt, getInput, readDir, deleteFile, editAppName } from '../utils'
 import edit from './edit'
 import isExistApp from './isExistApp'
-import editAppName from './editAppName'
 import editmock from './editmock'
 import editstyle from './editstyle'
 
@@ -92,7 +91,7 @@ async function clone (cloneApp, path, noExit) {
     )
     console.log(chalk.greenBright('复制文件成功！！！'))
     console.log('修改app/index中的name...')
-    const editNameRes = await editAppName(path)
+    const editNameRes = await editAppName(path, cloneApp)
     if( editNameRes ) {
         console.log(chalk.greenBright('修改app.name成功！'))
     }

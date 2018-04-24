@@ -163,17 +163,21 @@ ${a}
 }
 
 
-export function editAppName(path) {
+export function editAppName(path, preName) {
     return new Promise(function (resolve, reject) {
         const namearr = path.split('/')
         const name = namearr[namearr.length - 1]
         const nameStr = name
         fs.readFile(`./${path}/index.js`, (err, data) => {
             const str = data.toString()
-            const editStr = str.replace(/name:.*,/, function (a) {
+            let editStr = str.replace(/name:.*,/, function (a) {
                 console.log(a)
                 return `name: '${nameStr}',`
             })
+            if( preName ){
+                const rex = new RegExp(preName, 'g')
+                editStr = editStr.replace(rex, nameStr)
+            }
             fs.createWriteStream(`./${path}/index.js`).write(editStr, 'utf8', (err) => {
                 resolve(true)
             })

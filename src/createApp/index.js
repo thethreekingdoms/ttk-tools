@@ -58,7 +58,7 @@ async function createApp ( path) {
     )
     console.log(chalk.greenBright('复制文件成功！！！'))
     console.log('修改app/index中的name...')
-    const editNameRes = await editAppName(path)
+    const editNameRes = await editAppName(path, 'app-test')
     if( editNameRes ) {
         console.log(chalk.greenBright('修改app.name成功！'))
     }
