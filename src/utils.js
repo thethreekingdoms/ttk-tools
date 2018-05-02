@@ -7,6 +7,7 @@ import chalk from 'chalk'
 import fs from 'fs'
 import through from 'through2'
 import readline from 'readline'
+import { EFAULT } from 'constants';
 
 export function CMD(cmdStr, option) {
     return new Promise(function (resolve, reject) {
@@ -87,6 +88,10 @@ export function deleteFile(path) {
         });
         fs.rmdirSync(path);
     }
+}
+
+export function deleteSingleFile(path) {
+    fs.unlinkSync(path)
 }
 
 export function haveFile(path) {
@@ -190,6 +195,8 @@ export function editmock(path) {
         fs.readFile('./mock.js', (err, data) => {
             if( err ){
                 console.log(chalk.redBright('没有发现./mock.js'))
+                resolve(true)
+                return 
             }
             const str = data.toString()
             let  resultStr 

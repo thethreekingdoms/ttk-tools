@@ -3,12 +3,16 @@ import spawn from 'cross-spawn'
 import path, { resolve } from 'path'
 
 import { copyFile, haveFile, deleteFile, editAppName } from '../utils'
+import updateBase from './updateBase'
 // import editAppName from '../clone/editAppName'
 
 const { join, basename } = path
 
 async function update(updateApp, path) {
     //判断需要更新的文件夹是否存在
+    if( updateApp == 'ttk-app-core' ){
+        return updateBase()
+    }
     const haveFileRes = await haveFile(path)
     if( !haveFileRes ){
         console.log(chalk.redBright('该路径下不存在文件，无法更新！'))
@@ -16,7 +20,6 @@ async function update(updateApp, path) {
     }
     console.log(chalk.greenBright('下载更新包！'))
     const cloneResult = await spawn.sync('npm', ['update', updateApp], {cwd: join(process.cwd()), stdio: 'inherit' })
-    console.log('删除dist文件夹')
     const deleteFileRes = await deleteFile(`./${path}`)
     if( cloneResult.error || cloneResult.status != 0 ){
         console.log(chalk.redBright(cloneResult.error))

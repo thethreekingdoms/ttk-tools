@@ -42,6 +42,10 @@ ttk apps apps/edf ttk-edf-app-login ttk-edf-app-portal ...
 ```
 ttk update app[包的名字] path[已经存在的路径]
 ```
+更新基础模块
+```
+ttk update ttk-app-core
+```
 - ### 编译项目
 
 ```

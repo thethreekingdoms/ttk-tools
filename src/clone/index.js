@@ -4,11 +4,13 @@ import vfs from 'vinyl-fs'
 import path, { resolve } from 'path'
 import through from 'through2'
 
-import { mkdir, copyFile, haveFile, prompt, getInput, readDir, deleteFile, editAppName } from '../utils'
+import { 
+    mkdir, copyFile, haveFile, prompt, 
+    getInput, readDir, deleteFile, editAppName,
+    editmock, editstyle
+} from '../utils'
 import edit from './edit'
 import isExistApp from './isExistApp'
-import editmock from './editmock'
-import editstyle from './editstyle'
 
 const { join, basename } = path
 
