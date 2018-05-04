@@ -2,7 +2,7 @@ import chalk from 'chalk'
 import spawn from 'cross-spawn'
 import path, { resolve } from 'path'
 
-import { copyFile, haveFile, deleteFile, editAppName } from '../utils'
+import { copyFile, haveFile, deleteFile, editAppName, checkYarn } from '../utils'
 import updateBase from './updateBase'
 // import editAppName from '../clone/editAppName'
 
@@ -10,6 +10,7 @@ const { join, basename } = path
 
 async function update(updateApp, path) {
     //判断需要更新的文件夹是否存在
+    await checkYarn()
     if( updateApp == 'ttk-app-core' ){
         return updateBase()
     }
@@ -19,7 +20,7 @@ async function update(updateApp, path) {
         return process.exit()
     }
     console.log(chalk.greenBright('下载更新包！'))
-    const cloneResult = await spawn.sync('npm', ['update', updateApp], {cwd: join(process.cwd()), stdio: 'inherit' })
+    const cloneResult = await spawn.sync('yarn', ['upgrade', updateApp], {cwd: join(process.cwd()), stdio: 'inherit' })
     const deleteFileRes = await deleteFile(`./${path}`)
     if( cloneResult.error || cloneResult.status != 0 ){
         console.log(chalk.redBright(cloneResult.error))

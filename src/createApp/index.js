@@ -6,7 +6,7 @@ import path, { resolve } from 'path'
 import {
     mkdir, copyFile, haveFile, prompt, getInput, 
     readDir, edit, editAppName, editmock, editstyle,
-    deleteFile, replacePreName
+    deleteFile, replacePreName, checkYarn
 } from '../utils'
 
 const { join, basename } = path
@@ -25,6 +25,7 @@ async function checkPath (path) {
 }
 
 async function createApp ( path) {
+    await checkYarn()
     if( typeof(path) != 'string' ){
         console.log(chalk.yellowBright('你没有输入创建的app名字！'))
         path = await getInput('请输入创建的app名称：')
@@ -40,7 +41,7 @@ async function createApp ( path) {
     //     console.log(chalk.yellowBright('项目中已经存在该路径！'))
     //     path = await prompt('请输入新的路径：')
     // }
-    const cloneResult = await spawn.sync('npm', ['install', cloneApp], {cwd: join(process.cwd()), stdio: 'inherit' })
+    const cloneResult = await spawn.sync('yarn', ['add', cloneApp], {cwd: join(process.cwd()), stdio: 'inherit' })
     if( cloneResult.error || cloneResult.status != 0 ){
         console.log(chalk.redBright(cloneResult.error))
         console.log(chalk.redBright('下载ttk-app-init-demo失败！'))

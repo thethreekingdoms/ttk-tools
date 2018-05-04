@@ -7,7 +7,7 @@ import through from 'through2'
 import { 
     mkdir, copyFile, haveFile, prompt, 
     getInput, readDir, deleteFile, editAppName,
-    editmock, editstyle
+    editmock, editstyle, checkYarn
 } from '../utils'
 import edit from './edit'
 import isExistApp from './isExistApp'
@@ -49,6 +49,7 @@ async function JoinApp (path) {
 }
 
 async function clone (cloneApp, path, noExit) {
+    await checkYarn()
     if( typeof(cloneApp) != 'string' ){
         console.log(chalk.yellowBright('你没有输入clone的app！'))
         cloneApp = await getInput('请输入clone的app：')
@@ -70,7 +71,7 @@ async function clone (cloneApp, path, noExit) {
     //     console.log(chalk.yellowBright('项目中已经存在该路径！'))
     //     path = await prompt('请输入新的路径：')
     // }
-    const cloneResult = await spawn.sync('npm', ['install', cloneApp], {cwd: join(process.cwd()), stdio: 'inherit' })
+    const cloneResult = await spawn.sync('yarn', ['add', cloneApp], {cwd: join(process.cwd()), stdio: 'inherit' })
     if( cloneResult.status !=0 ||  cloneResult.error ){
         console.log(chalk.redBright(cloneResult.error))
         console.log(chalk.redBright('安装失败，请检查改app是否已经发布在npm上！'))

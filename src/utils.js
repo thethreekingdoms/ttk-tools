@@ -8,6 +8,33 @@ import fs from 'fs'
 import through from 'through2'
 import readline from 'readline'
 import { EFAULT } from 'constants';
+import which from 'which'
+import path, { resolve } from 'path'
+
+const { join, basename } = path
+export async function checkYarn () {
+    let flag = false
+    try{
+        const resolved = which.sync('yarn')
+        console.log(resolved)
+        if( resolved ){
+            flag = true
+        }
+    }catch(err){
+        console.log(err)
+    }
+    if( !flag ){
+        console.log(chalk.yellowBright('检测到你没有安装yarn!'))
+        console.log(chalk.greenBright('安装yarn!'))
+        const cloneResult = await spawn.sync('npm', ['install', 'yarn', '-g'], {cwd: join(process.cwd()), stdio: 'inherit' })
+        if( cloneResult.status !=0 ||  cloneResult.error ){
+            console.log(chalk.redBright(cloneResult.error))
+        }
+        console.log(chalk.greenBright('安装yarn成功'))
+        return true
+    }
+    return true
+}
 
 export function CMD(cmdStr, option) {
     return new Promise(function (resolve, reject) {
@@ -167,6 +194,19 @@ ${a}
     })
 }
 
+export function createPackageFile(app){
+    return new Promise(function(resolve, reject) {
+        fs.createWriteStream(`./${app}/package.json`).write(`{
+    "name": "${app}",
+    "version": "1.0.0",
+    "main": "index.js",
+    "license": "MIT"
+}
+`, 'utf-8', (err) => {
+    resolve(true)
+})
+    })
+}
 
 export function editAppName(path, preName) {
     return new Promise(function (resolve, reject) {

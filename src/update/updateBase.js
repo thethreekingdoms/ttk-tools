@@ -10,7 +10,7 @@ const { join, basename } = path
 async function  updateBase() {
     const updateApp = 'ttk-app-core'
     const delPackage = await deleteSingleFile(`./package.json`)
-    const cloneResult = await spawn.sync('npm', ['install', `${updateApp}@latest`], {cwd: join(process.cwd()), stdio: 'inherit' })
+    const cloneResult = await spawn.sync('yarn', ['add', `${updateApp}@latest`], {cwd: join(process.cwd()), stdio: 'inherit' })
     console.log(cloneResult)
     if( cloneResult.error || cloneResult.status != 0 ){
         console.log(chalk.redBright(cloneResult.error))

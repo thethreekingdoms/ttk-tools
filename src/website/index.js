@@ -4,7 +4,7 @@ import vfs from 'vinyl-fs'
 import path, { resolve } from 'path'
 import through from 'through2'
 
-import { mkdir, copyFile, getInput, inputYN } from '../utils'
+import { mkdir, copyFile, getInput, inputYN, createPackageFile, checkYarn } from '../utils'
 
 const { join, basename } = path
 const installPackge = 'ttk-app-core'
@@ -29,9 +29,11 @@ async function website (projectName) {
         chalk.redBright('创建文件夹失败')
         process.exit()
     }
+    await checkYarn()
     console.log(chalk.gray('下载中..........'))
+    const createPackageJson = await createPackageFile(projectName)
     // const res2 =await CMD(`npm i ${installPackge}`, {cwd: join(process.cwd(), projectName)})
-    const res2 = await spawn.sync('npm', ['install', installPackge], {cwd: join(process.cwd(), projectName), stdio: 'inherit' })
+    const res2 = await spawn.sync('yarn', ['add', installPackge], {cwd: join(process.cwd(), projectName), stdio: 'inherit' })
     console.log('res2', res2.error)
     if( res2.error || res2.status != 0 ){
         console.log(chalk.redBright(res2.error))
@@ -52,12 +54,12 @@ async function website (projectName) {
     if( !YNres ) {
         return process.exit()
     }
-    console.log(chalk.gray('安装依赖 npm install....'))
+    console.log(chalk.gray('安装依赖 yarn install....'))
     // const res4 = await CMD('npm install', {cwd: join(process.cwd(), projectName)})
-    const res4 = await spawn.sync('npm', ['install'], {cwd: join(process.cwd(), projectName), stdio: 'inherit' })
+    const res4 = await spawn.sync('yarn', ['install'], {cwd: join(process.cwd(), projectName), stdio: 'inherit' })
     if( res4.error ) {
         console.log(chalk.redBright(res4.error))
-        console.log(chalk.redBright('安装依赖失败， 请在项目根目录下以管理员身份运行：npm install'))
+        console.log(chalk.redBright('安装依赖失败， 请在项目根目录下以管理员身份运行：yarn install'))
         process.exit()
         return
     }
