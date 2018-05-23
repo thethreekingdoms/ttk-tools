@@ -213,7 +213,14 @@ export function editAppName(path, preName) {
         const namearr = path.split('/')
         const name = namearr[namearr.length - 1]
         const nameStr = name
+        if( !fs.existsSync(`./${path}/index.js`) ){
+            console.log(chalk.yellowBright(`./${path}/index.js 文件不存在！`))
+            return resolve(true)
+        }
         fs.readFile(`./${path}/index.js`, (err, data) => {
+            if( !data ){
+                return resolve(true)
+            }
             const str = data.toString()
             let editStr = str.replace(/name:.*,/, function (a) {
                 console.log(a)
@@ -232,6 +239,10 @@ export function editAppName(path, preName) {
 
 export function editmock(path) {
     return new Promise(function(resolve, reject){
+        if( !fs.existsSync(`./${path}/mock.js`) ){
+            console.log(chalk.yellowBright(`./${path}/mock.js 文件不存在！`))
+            return resolve(true)
+        }
         fs.readFile('./mock.js', (err, data) => {
             if( err ){
                 console.log(chalk.redBright('没有发现./mock.js'))
@@ -264,6 +275,10 @@ import './${path}/mock.js';`
 
 export function editstyle(path) {
     return new Promise(function(resolve, reject){
+        if( !fs.existsSync(`./${path}/style.less`) ){
+            console.log(chalk.yellowBright(`./${path}/style.less 文件不存在！`))
+            return resolve(true)
+        }
         fs.readFile('./assets/styles/apps.less', (err, data) => {
             if( err ){
                 console.log(chalk.redBright('没有发现./assets/styles/apps.less'))
