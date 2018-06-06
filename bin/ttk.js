@@ -88,6 +88,26 @@ program
   .action(function(path, ...apps){
     func.init()
   })
+
+
+program
+    .command('serverCreateParent')
+    .description('创建后端开发父工程（包含一个默认的微服务模板）')
+    .alias('scp')
+    .action(function (params) {
+        console.log('params', params)
+        func.serverCreateParent(params)
+    })
+program
+    .command('serverAddMicroservice')
+    .description('增加一个微服务,可指定模板名称，无指定则使用默认模板')
+    .alias('sam')
+    .action(function (businessName,moduleName) {
+        console.log('params:'+businessName+','+moduleName);
+        func.serverAddMicroservice(businessName,moduleName)
+    })
+
+
 program.parse(process.argv)
 
 
