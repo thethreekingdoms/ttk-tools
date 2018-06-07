@@ -1,7 +1,7 @@
 'use strict'
 
 import chalk from 'chalk'
-import { addServiceFromTemplate } from '../serverUtils'
+import { addServiceFromTemplate } from './serverUtils'
 import {
     mkdir, copyFile, haveFile, prompt,
     getInput, readDir, deleteFile, editAppName,
