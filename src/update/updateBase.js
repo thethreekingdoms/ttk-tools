@@ -25,6 +25,7 @@ async function  updateBase() {
             `!./node_modules/${updateApp}/node_modules`,
             `!./node_modules/${updateApp}/index.js`,
             `!./node_modules/${updateApp}/mock.js`,
+            `!./node_modules/${updateApp}/config.js`,
             `!./node_modules/${updateApp}/assets/styles/apps.less`,
         ]
     )
