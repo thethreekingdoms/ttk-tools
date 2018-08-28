@@ -8,5 +8,17 @@ import reset from './reset'
 import init from './init'
 import serverCreateParent from './serverCreateParent'
 import serverAddMicroservice from './serverAddMicroservice'
+import resetModule from './resetModule'
 
-export default { website, clone, compile, createApp, update, cloneApps, reset, init,serverCreateParent,serverAddMicroservice }
+export default { website, 
+    clone, 
+    compile, 
+    createApp, 
+    update, 
+    cloneApps, 
+    reset, 
+    init,
+    serverCreateParent,
+    serverAddMicroservice, 
+    resetModule
+}

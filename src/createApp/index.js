@@ -41,12 +41,26 @@ async function createApp ( path) {
     //     console.log(chalk.yellowBright('项目中已经存在该路径！'))
     //     path = await prompt('请输入新的路径：')
     // }
-    const cloneResult = await spawn.sync('yarn', ['add', cloneApp], {cwd: join(process.cwd()), stdio: 'inherit' })
-    if( cloneResult.error || cloneResult.status != 0 ){
-        console.log(chalk.redBright(cloneResult.error))
-        console.log(chalk.redBright('下载ttk-app-init-demo失败！'))
-        return process.exit()
+
+    const demoVersion = await prompt('默认安装ttk-app-core是2.0.0版本以上对应的的app。是否安装2.0.0以上的app Y/N? ')
+    console.log(demoVersion)
+    if(  demoVersion && demoVersion.toUpperCase() == 'N' ) {
+        console.log('下载1.0.0版本')
+        const cloneResult = await spawn.sync('yarn', ['add', `${cloneApp}@1.0.0`], {cwd: join(process.cwd()), stdio: 'inherit' })
+        if( cloneResult.error || cloneResult.status != 0 ){
+            console.log(chalk.redBright(cloneResult.error))
+            console.log(chalk.redBright('下载ttk-app-init-demo失败！'))
+            return process.exit()
+        }
+    }else{
+        const cloneResult = await spawn.sync('yarn', ['add', cloneApp], {cwd: join(process.cwd()), stdio: 'inherit' })
+        if( cloneResult.error || cloneResult.status != 0 ){
+            console.log(chalk.redBright(cloneResult.error))
+            console.log(chalk.redBright('下载ttk-app-init-demo失败！'))
+            return process.exit()
+        }
     }
+    
     
     const res3 = await copyFile(
         `${path}`,

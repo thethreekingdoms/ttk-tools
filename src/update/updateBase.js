@@ -2,12 +2,16 @@ import chalk from 'chalk'
 import spawn from 'cross-spawn'
 import path, { resolve } from 'path'
 
-import { copyFile, haveFile, deleteSingleFile, editAppName } from '../utils'
+import { copyFile, haveFile, deleteSingleFile, editAppName, prompt } from '../utils'
 // import editAppName from '../clone/editAppName'
 
 const { join, basename } = path
 
 async function  updateBase() {
+    const ans = await prompt('更新基础模块会修改除apps之外的所有内容，你确定要执行此操作吗 Y/N？ ')
+    if( ans && ans.toUpperCase() != 'Y' ) {
+        return process.exit()
+    }
     const updateApp = 'ttk-app-core'
     const delPackage = await deleteSingleFile(`./package.json`)
     const cloneResult = await spawn.sync('yarn', ['add', `${updateApp}@latest`], {cwd: join(process.cwd()), stdio: 'inherit' })

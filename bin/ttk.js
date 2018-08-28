@@ -89,6 +89,14 @@ program
     func.init()
   })
 
+program
+  .command('resetModule')
+  .description('reset module config')
+  .alias('rem')
+  .action(function(path, ...apps){
+    func.resetModule()
+  })
+
 
 program
     .command('serverCreateParent')

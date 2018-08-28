@@ -337,6 +337,17 @@ export async function inputYN() {
     }
 }
 
+export async function confirmYN(message) {
+    while (true) {
+        const res = await getInput(message)
+        if(res && res.toUpperCase()== 'YES' ||  res && res.toUpperCase()== 'Y'){
+            return true
+        }else if( res && res.toUpperCase()== 'NO' ||  res && res.toUpperCase()== 'N' ){
+            return false
+        }
+    }
+}
+
 function editAppStyle(path, name, preName) {
     return new Promise(function(resolve, reject) {
         fs.readFile(`./${path}/style.less`, (err, data) => {
