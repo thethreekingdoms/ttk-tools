@@ -2,6 +2,7 @@ import chalk from 'chalk'
 import spawn from 'cross-spawn'
 import vfs from 'vinyl-fs'
 import path, { resolve } from 'path'
+import fs from 'fs'
 
 import {
     mkdir, copyFile, haveFile, prompt, getInput, 
@@ -11,6 +12,7 @@ import {
 
 const { join, basename } = path
 const cloneApp = 'ttk-app-init-demo'
+const newCloneApp = 'ttk-app-init-new-demo'
 async function checkPath (path) {
     let result = path
     while (true) {
@@ -22,6 +24,19 @@ async function checkPath (path) {
             return result
         }
     }
+}
+
+
+
+function checkVersion () {
+    const result = fs.existsSync('./version.txt')
+    if( result ) {
+        const str = fs.readFileSync('./version.txt')
+        if( str && str.indexOf('2.0.0') > -1 ) {
+            return true
+        }
+    }
+    return false
 }
 
 async function createApp ( path) {
@@ -41,18 +56,17 @@ async function createApp ( path) {
     //     console.log(chalk.yellowBright('项目中已经存在该路径！'))
     //     path = await prompt('请输入新的路径：')
     // }
-
-    const demoVersion = await prompt('默认安装ttk-app-core是2.0.0版本以上对应的的app。是否安装2.0.0以上的app Y/N? ')
-    console.log(demoVersion)
-    if(  demoVersion && demoVersion.toUpperCase() == 'N' ) {
-        console.log('下载1.0.0版本')
-        const cloneResult = await spawn.sync('yarn', ['add', `${cloneApp}@1.0.0`], {cwd: join(process.cwd()), stdio: 'inherit' })
+    let appPath 
+    if( checkVersion() ) {
+        appPath = newCloneApp
+        const cloneResult = await spawn.sync('yarn', ['add', newCloneApp], {cwd: join(process.cwd()), stdio: 'inherit' })
         if( cloneResult.error || cloneResult.status != 0 ){
             console.log(chalk.redBright(cloneResult.error))
             console.log(chalk.redBright('下载ttk-app-init-demo失败！'))
             return process.exit()
         }
     }else{
+        appPath = cloneApp
         const cloneResult = await spawn.sync('yarn', ['add', cloneApp], {cwd: join(process.cwd()), stdio: 'inherit' })
         if( cloneResult.error || cloneResult.status != 0 ){
             console.log(chalk.redBright(cloneResult.error))
@@ -65,10 +79,10 @@ async function createApp ( path) {
     const res3 = await copyFile(
         `${path}`,
         [
-            `./node_modules/${cloneApp}/**`,
-            `!./node_modules/${cloneApp}/package.json`,
-            `!./node_modules/${cloneApp}/README.md`,
-            `!./node_modules/${cloneApp}/node_modules`
+            `./node_modules/${appPath}/**`,
+            `!./node_modules/${appPath}/package.json`,
+            `!./node_modules/${appPath}/README.md`,
+            `!./node_modules/${appPath}/node_modules`
         ]
     )
     console.log(chalk.greenBright('复制文件成功！！！'))
