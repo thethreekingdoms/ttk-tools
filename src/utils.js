@@ -320,9 +320,28 @@ function getAppPath(path, arr) {
     })
 }
 
+function getOwnAppPath(path, arr) {
+    const res = fs.readdirSync(path)
+    if( res.includes('index.js') && res.includes('data.js') ){
+        arr.push(path)
+    }
+    res.forEach(item => {
+        const currentPath = `${item}`
+        if( fs.statSync(currentPath).isDirectory() ){
+            getAppPath(currentPath, arr)
+        } 
+    })
+}
+
 export function getAllAppPath(path) {
     const arr = []
     getAppPath(path, arr)
+    return arr
+}
+
+export function getOwnAllAppPath(path) {
+    const arr = []
+    getOwnAppPath(path, arr)
     return arr
 }
 

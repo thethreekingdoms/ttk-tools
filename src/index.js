@@ -5,6 +5,7 @@ import createApp from './createApp'
 import update from './update'
 import cloneApps from './cloneApps'
 import reset from './reset'
+import rewrite from './rewrite'
 import init from './init'
 import serverCreateParent from './serverCreateParent'
 import serverAddMicroservice from './serverAddMicroservice'
@@ -17,6 +18,7 @@ export default { website,
     update, 
     cloneApps, 
     reset, 
+    rewrite, 
     init,
     serverCreateParent,
     serverAddMicroservice, 

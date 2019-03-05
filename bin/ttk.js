@@ -82,6 +82,14 @@ program
   })
 
 program
+  .command('rewrite')
+  .description('rewrite the project folder')
+  .alias('rw')
+  .action(function () {
+    func.rewrite()
+  })
+
+program
   .command('demo')
   .description('install complete apps')
   .alias('de')
