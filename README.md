@@ -68,6 +68,11 @@ ttk reset
 ```
 >此命令会遍历apps/下的文件目录，重新生成相应的`./index.js`、`mock.js`、`assets/style/app.less`的路径。
 
+```
+ttk rewrite
+```
+>此命令会遍历项目app下的文件目录，重新生成相应的`./index.js`、`index.less`的路径。
+
 - ### 一键生成演示网站
 ```
 ttk demo
