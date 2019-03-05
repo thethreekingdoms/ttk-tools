@@ -12,6 +12,7 @@ compile/cp|     编译项目
 update/up |     更新App
 apps/as    |    批量克隆App
 reset/re   |    重置目录
+rewrite/rw 	|   重置开发项目目录
 demo/de     |   一键生成演示网站
 serverCreateParent/scp|后端开发工程初始化
 serverAddMicroservice/sam|添加一个微服务到后端开发工程
