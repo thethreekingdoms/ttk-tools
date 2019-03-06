@@ -74,7 +74,10 @@ function transArrToStr1 (arr) {
 }
 
 async function rewrite(path) {
-    let pathNor = process.cwd().split('/')
+    let processPath = process.cwd(),
+        pathNor
+
+    pathNor = processPath.indexOf('/') != -1 ? processPath.split('/') : processPath.split('\\')
     if (typeof (path) != 'string') {
         path = '../' + pathNor[pathNor.length - 1]
     }
