@@ -6,7 +6,7 @@ import fs from 'fs'
 import { getAllAppPath } from '../utils'
 
 import {
-    mkdir, copyFile, haveFile, prompt, getInput, 
+    mkdir, copyFile, haveFile, prompt, getInput,
     readDir, edit, editAppName, editmock, editstyle,
     deleteFile, replacePreName, checkYarn
 } from '../utils'
@@ -14,14 +14,14 @@ import {
 const { join, basename } = path
 const cloneApp = 'ttk-app-init-demo'
 const newCloneApp = 'ttk-app-init-new-demo'
-async function checkPath (path) {
+async function checkPath(path) {
     let result = path
     while (true) {
         const flag = await haveFile(result)
-        if( flag ){
+        if (flag) {
             console.log(chalk.yellowBright('该路径下已经存在app!'))
             result = await prompt('请输入新的路径：')
-        }else{
+        } else {
             return result
         }
     }
@@ -29,20 +29,20 @@ async function checkPath (path) {
 
 
 
-function checkVersion () {
+function checkVersion() {
     const result = fs.existsSync('./version.txt')
-    if( result ) {
+    if (result) {
         const str = fs.readFileSync('./version.txt')
-        if( str && str.indexOf('2.0.0') > -1 ) {
+        if (str && str.indexOf('2.0.0') > -1) {
             return true
         }
     }
     return false
 }
 
-async function createApp ( path) {
+async function createApp(path) {
     await checkYarn()
-    if( typeof(path) != 'string' ){
+    if (typeof (path) != 'string') {
         console.log(chalk.yellowBright('你没有输入创建的app名字！'))
         path = await getInput('请输入创建的app名称：')
     }
@@ -57,26 +57,26 @@ async function createApp ( path) {
     //     console.log(chalk.yellowBright('项目中已经存在该路径！'))
     //     path = await prompt('请输入新的路径：')
     // }
-    let appPath 
-    if( checkVersion() ) {
+    let appPath
+    if (checkVersion()) {
         appPath = newCloneApp
-        const cloneResult = await spawn.sync('yarn', ['add', newCloneApp], {cwd: join(process.cwd()), stdio: 'inherit' })
-        if( cloneResult.error || cloneResult.status != 0 ){
+        const cloneResult = await spawn.sync('yarn', ['add', newCloneApp], { cwd: join(process.cwd()), stdio: 'inherit' })
+        if (cloneResult.error || cloneResult.status != 0) {
             console.log(chalk.redBright(cloneResult.error))
             console.log(chalk.redBright('下载ttk-app-init-demo失败！'))
             return process.exit()
         }
-    }else{
+    } else {
         appPath = cloneApp
-        const cloneResult = await spawn.sync('yarn', ['add', cloneApp], {cwd: join(process.cwd()), stdio: 'inherit' })
-        if( cloneResult.error || cloneResult.status != 0 ){
+        const cloneResult = await spawn.sync('yarn', ['add', cloneApp], { cwd: join(process.cwd()), stdio: 'inherit' })
+        if (cloneResult.error || cloneResult.status != 0) {
             console.log(chalk.redBright(cloneResult.error))
             console.log(chalk.redBright('下载ttk-app-init-demo失败！'))
             return process.exit()
         }
     }
-    
-    
+
+
     const res3 = await copyFile(
         `${path}`,
         [
@@ -89,17 +89,17 @@ async function createApp ( path) {
     console.log(chalk.greenBright('复制文件成功！！！'))
     console.log('修改app/index中的name...')
     const editNameRes = await editAppName(path, 'app-test')
-    if( editNameRes ) {
+    if (editNameRes) {
         console.log(chalk.greenBright('修改app.name成功！'))
     }
     const editmockRes = await editmock(path)
-    if( editmockRes ) {
+    if (editmockRes) {
         console.log(chalk.greenBright('修改mock.js成功！'))
     }
-    const editstyleres = await editstyle(path)
-    if( editstyleres ) {
-        console.log(chalk.greenBright('修改app.less成功！'))
-    }
+    // const editstyleres = await editstyle(path)
+    // if( editstyleres ) {
+    //     console.log(chalk.greenBright('修改app.less成功！'))
+    // }
     console.log('修改根目录下的index.js文件。')
     const editResult = await edit(path)
     await replacePreName(path, 'app-test')
@@ -124,10 +124,9 @@ function writeIndex(pathArr, pathNor) {
             const namearr = path.split('/')
             const name = namearr[namearr.length - 1]
             const nameStr = name.replace(/-/g, '_')
-            arrForm.push(`import ${nameStr} from  '${path}'`)
+            arrForm.push(`import ${nameStr} from  './${namearr[namearr.length - 1]}'`)
             arrInsert.push(`[${nameStr}.name]: ${nameStr},`)
         })
-
         let strForm = transArrToStr(arrForm),
             strInsert = transArrToStr1(arrInsert),
             strExport = `window.publicModule && window.publicModule.callback(obj,` + ' ' + '"' + pathNor[pathNor.length - 2] + '"' + `);` + '\n',
@@ -143,17 +142,17 @@ function writeIndex(pathArr, pathNor) {
     })
 }
 
-function writeStyle (pathArr, pathNor) {
+function writeStyle(pathArr, pathNor) {
     return new Promise(function (resolve, reject) {
         const arrForm = []
         pathArr.forEach(path => {
             const namearr = path.split('/')
             const name = namearr[namearr.length - 1]
             const nameStr = name.replace(/-/g, '_')
-            if( fs.existsSync(`${path}/style.less`) ) {
-                arrForm.push(`@import '${path}/style.less';`)
+            if (fs.existsSync(`${path}/style.less`)) {
+                arrForm.push(`@import './${namearr[namearr.length - 1]}/style.less';`)
             }
-            
+
         })
         let arrForm1 = transArrToStr(arrForm),
             writePath = './apps/' + pathNor[pathNor.length - 2] + '/index.less'
@@ -163,10 +162,10 @@ function writeStyle (pathArr, pathNor) {
     })
 }
 
-function transArrToStr (arr) {
+function transArrToStr(arr) {
     let str
     arr.map(o => {
-        if(!str) {
+        if (!str) {
             str = o + '\n'
         } else {
             str += o + '\n'
@@ -174,10 +173,10 @@ function transArrToStr (arr) {
     })
     return str
 }
-function transArrToStr1 (arr) {
+function transArrToStr1(arr) {
     let str
     arr.map(o => {
-        if(!str) {
+        if (!str) {
             str = '\n' + '    ' + o + '\n'
         } else {
             str += '    ' + o + '\n'
