@@ -29,6 +29,15 @@ program
   })
 
 program
+  .command('module')
+  .description('create module files')
+  .alias('mo')
+  .action(function (a) {
+    // require('../command/model')()
+    func.createModule(a)
+  })
+
+program
   .command('sever')
   .description('create Sever files')
   .alias('se')
