@@ -150,11 +150,7 @@ function writeStyle(pathArr, pathNor) {
             const name = namearr[namearr.length - 1]
             const nameStr = name.replace(/-/g, '_')
             if (fs.existsSync(`${path}/style.less`)) {
-<<<<<<< HEAD
                 arrForm.push(`@import './${namearr[namearr.length - 1]}/style.less';`)
-=======
-                arrForm.push(`@import '${path}/style.less';`)
->>>>>>> b3ad85710d76b308c0750d6e2a210e195f0e16dc
             }
 
         })
