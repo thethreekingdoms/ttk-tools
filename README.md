@@ -5,6 +5,7 @@
 ---|---
 new/n | 创建新项目
 app/a | 创建空白App
+module/mo | 创建空白Module
 sever/se | 启动Mock服务
 service/sc | 启动Web服务
 clone/c |       克隆App
@@ -62,6 +63,13 @@ ttk app path[路径+app名称]
 如：ttk app edf/ttk-edf-app-login [默认会在apps路径下创建]
 ```
 > 默认取最末级作为app的名称
+
+- ## 创建一个空的module
+```
+ttk module [name]
+如：ttk module test2 [会在appps路径下面创建test2模块]
+```
+>此命令会在apps文件目录创建[name]模块，自动引入模块依赖到项目
 
 - ### 重置app的目录结构
 ```
