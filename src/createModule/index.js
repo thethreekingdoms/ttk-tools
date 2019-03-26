@@ -79,12 +79,20 @@ async function createModule(path) {
                 })
             })
 
-            // 6、配置文件webpack.config.module.js里加入新模块的判断，如`case '--taxapply': argName = 'taxapply'`来实现按模块打包
+            // 6、配置文件webpack.config.module.js   webpack.config.js里加入新模块的判断，如`case '--taxapply': argName = 'taxapply'`来实现按模块打包
             fs.readFile('./webpack.config.module.js', (err, data) => {
                 const str = data.toString()
                 const strNew = splitArr3(str, path)
 
                 fs.createWriteStream('./webpack.config.module.js').write(strNew, 'utf8', (err) => {
+                    resolve()
+                })
+            })
+            fs.readFile('./webpack.config.js', (err, data) => {
+                const str = data.toString()
+                const strNew = splitArr5(str, path)
+
+                fs.createWriteStream('./webpack.config.js').write(strNew, 'utf8', (err) => {
                     resolve()
                 })
             })
@@ -116,7 +124,7 @@ async function createModule(path) {
 
 function splitArr(str, path) {
     const str1 = str.replace(/moduleName = \[/g, function(a) {
-        const str2 = `moduleName = \['${path}', `
+        const str2 = `moduleName = ['${path}', `
         return str2
     })
     return str1
@@ -161,6 +169,14 @@ ${str3} //create-module-end`
 function splitArr2(str, path) {
     const str1 = str.replace(/"modules": "/g, function(a) {
         const str2 = `"modules": "npm run module --${path} && `
+        return str2
+    })
+    return str1
+}
+
+function splitArr5(str, path) {
+    const str1 = str.replace(/const modules = \[/g, function(a) {
+        const str2 = `const modules = ['${path}', `
         return str2
     })
     return str1

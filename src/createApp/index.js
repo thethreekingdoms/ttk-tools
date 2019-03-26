@@ -3,6 +3,7 @@ import spawn from 'cross-spawn'
 import vfs from 'vinyl-fs'
 import path, { resolve } from 'path'
 import fs from 'fs'
+import { getAllAppPath } from '../utils'
 
 import {
     mkdir, copyFile, haveFile, prompt, getInput, 
@@ -48,7 +49,7 @@ async function createApp ( path) {
     console.log('检查该路径下是否已经存在app...')
     // 默认在apps文件夹下创建
     path = `apps/${path}`
-    path = await checkPath(path)
+    // path = await checkPath(path)
     console.log(path)
     // console.log(haveFileResult)
 
@@ -102,7 +103,88 @@ async function createApp ( path) {
     console.log('修改根目录下的index.js文件。')
     const editResult = await edit(path)
     await replacePreName(path, 'app-test')
+    await rewrite(path)
     console.log(chalk.greenBright('完成'))
     process.exit()
 }
+
+async function rewrite(path) {
+    let pathNor = path.indexOf('/') != -1 ? path.split('/') : path.split('\\'),
+        res = getAllAppPath('./apps/' + pathNor[pathNor.length - 2])
+
+    const writeIndexRes = await writeIndex(res, pathNor)
+    const writeStyleRes = await writeStyle(res, pathNor)
+}
+
+function writeIndex(pathArr, pathNor) {
+    return new Promise(function (resolve, reject) {
+        const arrForm = []
+        const arrInsert = []
+        pathArr.forEach(path => {
+            const namearr = path.split('/')
+            const name = namearr[namearr.length - 1]
+            const nameStr = name.replace(/-/g, '_')
+            arrForm.push(`import ${nameStr} from  '${path}'`)
+            arrInsert.push(`[${nameStr}.name]: ${nameStr},`)
+        })
+
+        let strForm = transArrToStr(arrForm),
+            strInsert = transArrToStr1(arrInsert),
+            strExport = `window.publicModule && window.publicModule.callback(obj,` + ' ' + '"' + pathNor[pathNor.length - 2] + '"' + `);` + '\n',
+            strFun = `export default obj;`,
+            writePath = './apps/' + pathNor[pathNor.length - 2] + '/index.js',
+            strs
+
+        strs = strForm + '\n' + `const obj={` + strInsert + `}` + '\n\n' + strExport + '\n' + strFun
+
+        fs.writeFile(writePath, strs, (err) => {
+            resolve()
+        })
+    })
+}
+
+function writeStyle (pathArr, pathNor) {
+    return new Promise(function (resolve, reject) {
+        const arrForm = []
+        pathArr.forEach(path => {
+            const namearr = path.split('/')
+            const name = namearr[namearr.length - 1]
+            const nameStr = name.replace(/-/g, '_')
+            if( fs.existsSync(`${path}/style.less`) ) {
+                arrForm.push(`@import '${path}/style.less';`)
+            }
+            
+        })
+        let arrForm1 = transArrToStr(arrForm),
+            writePath = './apps/' + pathNor[pathNor.length - 2] + '/index.less'
+        fs.writeFile(writePath, arrForm1, (err) => {
+            resolve()
+        })
+    })
+}
+
+function transArrToStr (arr) {
+    let str
+    arr.map(o => {
+        if(!str) {
+            str = o + '\n'
+        } else {
+            str += o + '\n'
+        }
+    })
+    return str
+}
+function transArrToStr1 (arr) {
+    let str
+    arr.map(o => {
+        if(!str) {
+            str = '\n' + '    ' + o + '\n'
+        } else {
+            str += '    ' + o + '\n'
+        }
+    })
+    return str
+}
+
+
 export default createApp
