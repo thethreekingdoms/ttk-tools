@@ -64,7 +64,7 @@ ttk app path[路径+app名称]
 ```
 > 默认取最末级作为app的名称
 
-- ## 创建一个空的module
+- ### 创建一个空的module
 ```
 ttk module [name]
 如：ttk module test2 [会在appps路径下面创建test2模块]
