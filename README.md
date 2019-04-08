@@ -6,6 +6,7 @@
 new/n | 创建新项目
 app/a | 创建空白App
 module/mo | 创建空白Module
+delmodule/dmo | 删除空白Module
 sever/se | 启动Mock服务
 service/sc | 启动Web服务
 clone/c |       克隆App
@@ -70,6 +71,13 @@ ttk module [name]
 如：ttk module test2 [会在appps路径下面创建test2模块]
 ```
 >此命令会在apps文件目录创建[name]模块，自动引入模块依赖到项目
+
+- ### 删除一个空的module
+```
+ttk delmodule [name]
+如：ttk delmodule test2 [会在appps路径下面删除test2模块]
+```
+>此命令会在apps文件目录删除[name]模块，如果模块内部有app需要手动剪切走
 
 - ### 重置app的目录结构
 ```
