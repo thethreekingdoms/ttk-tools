@@ -3,6 +3,7 @@ import clone from './clone'
 import compile from './compile'
 import createApp from './createApp'
 import createModule from './createModule'
+import delModule from './delModule'
 import update from './update'
 import cloneApps from './cloneApps'
 import reset from './reset'
@@ -17,6 +18,7 @@ export default { website,
     compile, 
     createApp, 
     createModule, 
+    delModule, 
     update, 
     cloneApps, 
     reset, 

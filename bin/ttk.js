@@ -38,6 +38,15 @@ program
   })
 
 program
+  .command('delmodule')
+  .description('delete module files')
+  .alias('dmo')
+  .action(function (a) {
+    // require('../command/model')()
+    func.delModule(a)
+  })
+
+program
   .command('sever')
   .description('create Sever files')
   .alias('se')
