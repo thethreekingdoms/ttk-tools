@@ -24,26 +24,32 @@ async function delModule(path) {
     // start
     fs.exists("./apps/" + path,function(exists){
         if(!exists){
-            console.log("要删除的模块不存在!")
-            return
+            console.log("要删除的模块文件夹不存在apps中!")
         }
-        var res = fs.readdirSync("./apps/" + path),
-            files = res.filter(o => fs.statSync("./apps/" + path + "/" + o).isDirectory())
+        if(exists) {
+            var res = fs.readdirSync("./apps/" + path),
+                files = res.filter(o => fs.statSync("./apps/" + path + "/" + o).isDirectory())
 
-        if (files.length > 1 || files.length == 1 && files[0] != 'theme') {
-            console.log('此模块下已有app，请将其拷走备份');
-            return;
+            if (files.length > 1 || files.length == 1 && files[0] != 'theme') {
+                console.log('此模块下已有app,请将其拷走备份!');
+                return;
+            }
+
+            // 4、在apps下面删除此模块
+            deleteFile('./apps/' + path);
         }
 
-        // 4、在apps下面删除此模块
-        deleteFile('./apps/' + path);
-        // 1、在./modules/[modulesname].js `在文件夹下删除模块名.js文件`
-        fs.unlinkSync('./modules/' + path + '.js');
+        fs.exists("./modules/" + path + ".js", function(exists1) {
+            if(exists1) {
+                // 1、在./modules/[modulesname].js `在文件夹下删除模块名.js文件`
+                fs.unlinkSync('./modules/' + path + '.js');
+            }
+        })
 
         var verbRes = fs.readdirSync('./apps'),
             verbFiles = verbRes.filter(o => fs.statSync("./apps/" + o).isDirectory())
 
-        // 2、在./modules/loadGlobalModules.js和createManifest.js文件里引入上步创建的模块名。
+        // 2、在./modules/loadGlobalModules.js和createManifest.js文件里删除上步创建的模块名。
         fs.readFile('./modules/loadGlobalModules.js', function (err, data) {
             var str = data.toString();
             var strNew = splitArr(str, path, verbFiles);
@@ -60,7 +66,7 @@ async function delModule(path) {
             });
         });
 
-        // 3、在./index.js文件里加入模块名称的导入
+        // 3、在./index.js文件里删除模块名称的导入
         fs.readFile('./index.js', function (err, data) {
             var str = data.toString();
             var strNew = splitArr1(str, path, verbFiles);
@@ -70,7 +76,7 @@ async function delModule(path) {
             });
         });
 
-        // 5、在package.json文件里`modules`命令下加入该模块名`npm run module --[modulesname]`
+        // 5、在package.json文件里`modules`命令下删除该模块名`npm run module --[modulesname]`
         fs.readFile('./package.json', function (err, data) {
             var str = data.toString();
             var strNew = splitArr2(str, path, verbFiles);
@@ -80,7 +86,7 @@ async function delModule(path) {
             });
         });
 
-        // 6、配置文件webpack.config.module.js   webpack.config.js里加入新模块的判断，如`case '--taxapply': argName = 'taxapply'`来实现按模块打包
+        // 6、配置文件webpack.config.module.js   webpack.config.js里删除新模块的判断，如`case '--taxapply': argName = 'taxapply'`来实现按模块打包
         fs.readFile('./webpack.config.module.js', function (err, data) {
             var str = data.toString();
             var strNew = splitArr3(str, path, verbFiles);
@@ -98,7 +104,7 @@ async function delModule(path) {
             });
         });
 
-        // 7、在webpackCompileParams.js文件里添加入模块的引用。
+        // 7、在webpackCompileParams.js文件里删除模块的引用。
         fs.readFile('./webpackCompileParams.js', function (err, data) {
             var str = data.toString();
             var strNew = splitArr4(str, path, verbFiles);
@@ -107,6 +113,9 @@ async function delModule(path) {
                 resolve()
             });
         });
+
+        console.log("删除模块成功!")
+        console.log("如果之前模块下存在app,请手动删除根目录下mock.js文件对其的引用.")
     })
 }
 

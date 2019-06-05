@@ -1,6 +1,6 @@
 {
   "name": "ttk-tool",
-  "version": "2.0.7",
+  "version": "2.0.8",
   "description": "```\r sudo npm i -g ttk-tool\r ```\r ###创建website",
   "main": "index.js",
   "scripts": {
