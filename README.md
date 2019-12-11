@@ -9,13 +9,13 @@ module/mo | 创建空白Module
 delmodule/dmo | 删除空白Module
 sever/se | 启动Mock服务
 service/sc | 启动Web服务
-clone/c |       克隆App
-compile/cp|     编译项目
-update/up |     更新App
-apps/as    |    批量克隆App
-reset/re   |    重置目录
-rewrite/rw 	|   重置开发项目目录
-demo/de     |   一键生成演示网站
+clone/c |       克隆App(不推荐使用)
+compile/cp|     编译项目(不推荐使用)
+update/up |     更新App(不推荐使用)
+apps/as    |    批量克隆App(不推荐使用)
+reset/re   |    重置目录(不推荐使用)
+rewrite/rw 	|   重置开发项目目录（需要到模块下执行）
+demo/de     |   一键生成演示网站(不推荐使用)
 serverCreateParent/scp|后端开发工程初始化
 serverAddMicroservice/sam|添加一个微服务到后端开发工程
 
