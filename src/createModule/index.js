@@ -18,11 +18,15 @@ async function createModule(path) {
     if( typeof(path) != 'string' ){
         console.log(chalk.yellowBright('你没有输入创建的module名字！'))
         path = await getInput('请输入创建的module名称：')
+    }else if (path.indexOf('-')>=0){
+        console.log(chalk.yellowBright('module名字不能含有非法字符串“-”.'))
+        path = await getInput('请重新输入module名称：')
     }
     console.log('检查该路径下是否已经存在module...')
 
     // start
     fs.exists("./apps/" + path,function(exists){
+        
         if(exists){
             console.log("文件存在")
         } else {

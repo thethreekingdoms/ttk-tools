@@ -8,12 +8,13 @@ import { getAllAppPath } from '../utils'
 import {
     mkdir, copyFile, haveFile, prompt, getInput,
     readDir, edit, editAppName, editmock, editstyle,
-    deleteFile, replacePreName, checkYarn
+    deleteFile, replacePreName, checkYarn, replaceHookAppName
 } from '../utils'
 
 const { join, basename } = path
 const cloneApp = 'ttk-app-init-demo'
 const newCloneApp = 'ttk-app-init-new-demo'
+const newHookApp = 'ttk-hook-app-init'
 async function checkPath(path) {
     let result = path
     while (true) {
@@ -46,6 +47,11 @@ async function createApp(path) {
         console.log(chalk.yellowBright('你没有输入创建的app名字！'))
         path = await getInput('请输入创建的app名称：')
     }
+    console.log(chalk.yellowBright(`请输入对应数字，选择应用的类型。
+    1: 原生hook应用(或者任意字符)
+    2: 旧版json应用`))
+    const type = await getInput(`请输入:`, true)
+
     console.log('检查该路径下是否已经存在app...')
     // 默认在apps文件夹下创建
     path = `apps/${path}`
@@ -58,6 +64,8 @@ async function createApp(path) {
     //     path = await prompt('请输入新的路径：')
     // }
     let appPath
+    let app = newHookApp
+    if (type == 2) app = cloneApp
     if (checkVersion()) {
         appPath = newCloneApp
         const cloneResult = await spawn.sync('yarn', ['add', newCloneApp], { cwd: join(process.cwd()), stdio: 'inherit' })
@@ -67,11 +75,11 @@ async function createApp(path) {
             return process.exit()
         }
     } else {
-        appPath = cloneApp
-        const cloneResult = await spawn.sync('yarn', ['add', cloneApp], { cwd: join(process.cwd()), stdio: 'inherit' })
+        appPath = app
+        const cloneResult = await spawn.sync('yarn', ['add', app], { cwd: join(process.cwd()), stdio: 'inherit' })
         if (cloneResult.error || cloneResult.status != 0) {
             console.log(chalk.redBright(cloneResult.error))
-            console.log(chalk.redBright('下载ttk-app-init-demo失败！'))
+            console.log(chalk.redBright(`下载${app}失败！`))
             return process.exit()
         }
     }
@@ -102,7 +110,11 @@ async function createApp(path) {
     // }
     console.log('修改根目录下的index.js文件。')
     const editResult = await edit(path)
-    await replacePreName(path, 'app-test')
+    if(type==2){
+        await replacePreName(path, 'app-test')
+    }else{
+        await replaceHookAppName(path, app)
+    }
     await rewrite(path)
     console.log(chalk.greenBright('完成'))
     process.exit()

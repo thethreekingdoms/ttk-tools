@@ -12,22 +12,22 @@ import which from 'which'
 import path, { resolve } from 'path'
 
 const { join, basename } = path
-export async function checkYarn () {
+export async function checkYarn() {
     let flag = false
-    try{
+    try {
         const resolved = which.sync('yarn')
         console.log(resolved)
-        if( resolved ){
+        if (resolved) {
             flag = true
         }
-    }catch(err){
+    } catch (err) {
         console.log(err)
     }
-    if( !flag ){
+    if (!flag) {
         console.log(chalk.yellowBright('检测到你没有安装yarn!'))
         console.log(chalk.greenBright('安装yarn!'))
-        const cloneResult = await spawn.sync('npm', ['install', 'yarn', '-g'], {cwd: join(process.cwd()), stdio: 'inherit' })
-        if( cloneResult.status !=0 ||  cloneResult.error ){
+        const cloneResult = await spawn.sync('npm', ['install', 'yarn', '-g'], { cwd: join(process.cwd()), stdio: 'inherit' })
+        if (cloneResult.status != 0 || cloneResult.error) {
             console.log(chalk.redBright(cloneResult.error))
         }
         console.log(chalk.greenBright('安装yarn成功'))
@@ -71,43 +71,43 @@ export function copyFile(projectName, path) {
 }
 
 export function copyDir(src, dist, callback) {
-  fs.access(dist, function(err){
-    if(err){
-      // 目录不存在时创建目录
-      fs.mkdirSync(dist);
-    }
-    _copy(null, src, dist);
-  });
-
-  function _copy(err, src, dist) {
-    if(err){
-      callback(err);
-    } else {
-      fs.readdir(src, function(err, paths) {
-        if(err){
-          callback(err)
-        } else {
-          paths.forEach(function(path) {
-            var _src = src + '/' +path;
-            var _dist = dist + '/' +path;
-            fs.stat(_src, function(err, stat) {
-              if(err){
-                callback(err);
-              } else {
-                // 判断是文件还是目录
-                if(stat.isFile()) {
-                  fs.writeFileSync(_dist, fs.readFileSync(_src));
-                } else if(stat.isDirectory()) {
-                  // 当是目录是，递归复制
-                  copyDir(_src, _dist, callback)
-                }
-              }
-            })
-          })
+    fs.access(dist, function (err) {
+        if (err) {
+            // 目录不存在时创建目录
+            fs.mkdirSync(dist);
         }
-      })
+        _copy(null, src, dist);
+    });
+
+    function _copy(err, src, dist) {
+        if (err) {
+            callback(err);
+        } else {
+            fs.readdir(src, function (err, paths) {
+                if (err) {
+                    callback(err)
+                } else {
+                    paths.forEach(function (path) {
+                        var _src = src + '/' + path;
+                        var _dist = dist + '/' + path;
+                        fs.stat(_src, function (err, stat) {
+                            if (err) {
+                                callback(err);
+                            } else {
+                                // 判断是文件还是目录
+                                if (stat.isFile()) {
+                                    fs.writeFileSync(_dist, fs.readFileSync(_src));
+                                } else if (stat.isDirectory()) {
+                                    // 当是目录是，递归复制
+                                    copyDir(_src, _dist, callback)
+                                }
+                            }
+                        })
+                    })
+                }
+            })
+        }
     }
-  }
 }
 
 export function mkdir(name) {
@@ -186,11 +186,14 @@ export function prompt(question) {
     })
 }
 
-export async function getInput(warn) {
+export async function getInput(warn, _null = false) {
     while (true) {
         const res = await prompt(warn)
-        if( !res ){
+        if (!res && !_null) {
             console.log(chalk.yellowBright('你的输入为空!'))
+        }
+        if (_null) {
+            return res
         }
         if (res) {
             return res
@@ -233,8 +236,8 @@ ${a}
     })
 }
 
-export function createPackageFile(app){
-    return new Promise(function(resolve, reject) {
+export function createPackageFile(app) {
+    return new Promise(function (resolve, reject) {
         fs.createWriteStream(`./${app}/package.json`).write(`{
     "name": "${app}",
     "version": "1.0.0",
@@ -242,8 +245,8 @@ export function createPackageFile(app){
     "license": "MIT"
 }
 `, 'utf-8', (err) => {
-    resolve(true)
-})
+            resolve(true)
+        })
     })
 }
 
@@ -252,12 +255,12 @@ export function editAppName(path, preName) {
         const namearr = path.split('/')
         const name = namearr[namearr.length - 1]
         const nameStr = name
-        if( !fs.existsSync(`./${path}/index.js`) ){
+        if (!fs.existsSync(`./${path}/index.js`)) {
             console.log(chalk.yellowBright(`./${path}/index.js 文件不存在！`))
             return resolve(true)
         }
         fs.readFile(`./${path}/index.js`, (err, data) => {
-            if( !data ){
+            if (!data) {
                 return resolve(true)
             }
             const str = data.toString()
@@ -265,7 +268,7 @@ export function editAppName(path, preName) {
                 console.log(a)
                 return `name: '${nameStr}',`
             })
-            if( preName ){
+            if (preName) {
                 const rex = new RegExp(preName, 'g')
                 editStr = editStr.replace(rex, nameStr)
             }
@@ -277,70 +280,70 @@ export function editAppName(path, preName) {
 }
 
 export function editmock(path) {
-    return new Promise(function(resolve, reject){
-        if( !fs.existsSync(`./${path}/mock.js`) ){
+    return new Promise(function (resolve, reject) {
+        if (!fs.existsSync(`./${path}/mock.js`)) {
             console.log(chalk.yellowBright(`./${path}/mock.js 文件不存在！`))
             return resolve(true)
         }
         fs.readFile('./mock.js', (err, data) => {
-            if( err ){
+            if (err) {
                 console.log(chalk.redBright('没有发现./mock.js'))
                 resolve(true)
-                return 
+                return
             }
             const str = data.toString()
-            let  resultStr 
-            if( str.includes('//note-end') ){
+            let resultStr
+            if (str.includes('//note-end')) {
                 resultStr = str.replace(/\/\/note-end/,
-`import './${path}/mock.js';
+                    `import './${path}/mock.js';
 //note-end
 ` )
-            }else{
-                resultStr = str+`
+            } else {
+                resultStr = str + `
 import './${path}/mock.js';`
             }
-            
-            fs.createWriteStream('./mock.js').write(resultStr, 'utf8', (err)=>{
-              if( err ){
-                  resolve(false)
-                  console.log(chalk.redBright('修改./mock.js失败'))
-                  return
-              }
-              resolve(true)
+
+            fs.createWriteStream('./mock.js').write(resultStr, 'utf8', (err) => {
+                if (err) {
+                    resolve(false)
+                    console.log(chalk.redBright('修改./mock.js失败'))
+                    return
+                }
+                resolve(true)
             })
         });
     })
 }
 
 export function editstyle(path) {
-    return new Promise(function(resolve, reject){
-        if( !fs.existsSync(`./${path}/style.less`) ){
+    return new Promise(function (resolve, reject) {
+        if (!fs.existsSync(`./${path}/style.less`)) {
             console.log(chalk.yellowBright(`./${path}/style.less 文件不存在！`))
             return resolve(true)
         }
         fs.readFile('./assets/styles/apps.less', (err, data) => {
-            if( err ){
+            if (err) {
                 console.log(chalk.redBright('没有发现./assets/styles/apps.less'))
             }
             const str = data.toString()
-            let resultStr 
-            if( str.includes('//note-end') ){
-                resultStr = str.replace(/\/\/note-end/, 
-`
+            let resultStr
+            if (str.includes('//note-end')) {
+                resultStr = str.replace(/\/\/note-end/,
+                    `
 @import '../../${path}/style.less';
-//note-end`                
+//note-end`
 
                 )
-            }else{
-                resultStr = str+`
+            } else {
+                resultStr = str + `
 @import '../../${path}/style.less';`
             }
-            fs.createWriteStream('./assets/styles/apps.less').write(resultStr, 'utf8', (err)=>{
-              if( err ){
-                  resolve(false)
-                  console.log(chalk.redBright('修改./assets/styles/apps.less失败'))
-              }
-              resolve(true)
+            fs.createWriteStream('./assets/styles/apps.less').write(resultStr, 'utf8', (err) => {
+                if (err) {
+                    resolve(false)
+                    console.log(chalk.redBright('修改./assets/styles/apps.less失败'))
+                }
+                resolve(true)
             })
         });
     })
@@ -348,27 +351,31 @@ export function editstyle(path) {
 
 function getAppPath(path, arr) {
     const res = fs.readdirSync(path)
-    if( res.includes('index.js') && res.includes('data.js') ){
+    if (res.includes('index.js') && res.includes('data.js')) {
+        arr.push(path)
+    } else if (res.includes('index.js') && res.includes('app.js')) {
         arr.push(path)
     }
     res.forEach(item => {
         const currentPath = `${path}/${item}`
-        if( fs.statSync(currentPath).isDirectory() ){
+        if (fs.statSync(currentPath).isDirectory()) {
             getAppPath(currentPath, arr)
-        } 
+        }
     })
 }
 
 function getOwnAppPath(path, arr) {
     const res = fs.readdirSync(path)
-    if( res.includes('index.js') && res.includes('data.js') ){
+    if (res.includes('index.js') && res.includes('data.js')) {
+        arr.push(path)
+    } else if (res.includes('index.js') && res.includes('app.js')) {
         arr.push(path)
     }
     res.forEach(item => {
         const currentPath = `${item}`
-        if( fs.statSync(currentPath).isDirectory() ){
+        if (fs.statSync(currentPath).isDirectory()) {
             getAppPath(currentPath, arr)
-        } 
+        }
     })
 }
 
@@ -387,9 +394,9 @@ export function getOwnAllAppPath(path) {
 export async function inputYN() {
     while (true) {
         const res = await getInput('是否需要安装依赖(Y/N)?')
-        if(res && res.toUpperCase()== 'YES' ||  res && res.toUpperCase()== 'Y'){
+        if (res && res.toUpperCase() == 'YES' || res && res.toUpperCase() == 'Y') {
             return true
-        }else if( res && res.toUpperCase()== 'NO' ||  res && res.toUpperCase()== 'N' ){
+        } else if (res && res.toUpperCase() == 'NO' || res && res.toUpperCase() == 'N') {
             return false
         }
     }
@@ -398,61 +405,95 @@ export async function inputYN() {
 export async function confirmYN(message) {
     while (true) {
         const res = await getInput(message)
-        if(res && res.toUpperCase()== 'YES' ||  res && res.toUpperCase()== 'Y'){
+        if (res && res.toUpperCase() == 'YES' || res && res.toUpperCase() == 'Y') {
             return true
-        }else if( res && res.toUpperCase()== 'NO' ||  res && res.toUpperCase()== 'N' ){
+        } else if (res && res.toUpperCase() == 'NO' || res && res.toUpperCase() == 'N') {
             return false
         }
     }
 }
 
 function editAppStyle(path, name, preName) {
-    return new Promise(function(resolve, reject) {
+    return new Promise(function (resolve, reject) {
         fs.readFile(`./${path}/style.less`, (err, data) => {
-            if( err ){
+            if (err) {
                 console.log(chalk.redBright('没有发现./assets/styles/apps.less'))
             }
             const rex = new RegExp(preName, 'g')
             const str = data.toString()
             const resultStr = str.replace(rex, name)
-            fs.createWriteStream(`./${path}/style.less`).write(resultStr, 'utf8', (err)=>{
-              if( err ){
-                  resolve(false)
-                  console.log(chalk.redBright(`修改./${path}/style.less失败`))
-              }
-              resolve(true)
+            fs.createWriteStream(`./${path}/style.less`).write(resultStr, 'utf8', (err) => {
+                if (err) {
+                    resolve(false)
+                    console.log(chalk.redBright(`修改./${path}/style.less失败`))
+                }
+                resolve(true)
             })
         });
     })
 }
 
 function editAppData(path, name, preName) {
-    return new Promise(function(resolve, reject) {
+    return new Promise(function (resolve, reject) {
         fs.readFile(`./${path}/data.js`, (err, data) => {
-            if( err ){
+            if (err) {
                 console.log(chalk.redBright(`没有发现./${path}/data.js`))
             }
             const rex = new RegExp(preName, 'g')
             const str = data.toString()
             const resultStr = str.replace(rex, name)
-            fs.createWriteStream(`./${path}/data.js`).write(resultStr, 'utf8', (err)=>{
-              if( err ){
-                  resolve(false)
-                  console.log(chalk.redBright(`修改./${path}/data.js失败`))
-              }
-              resolve(true)
+            fs.createWriteStream(`./${path}/data.js`).write(resultStr, 'utf8', (err) => {
+                if (err) {
+                    resolve(false)
+                    console.log(chalk.redBright(`修改./${path}/data.js失败`))
+                }
+                resolve(true)
             })
         });
     })
 }
 
-export async function replacePreName(path, preName){
+function replaceFileAppName(file, name, preName) {
+    return new Promise(function (resolve, reject) {
+        fs.readFile(file, (err, data) => {
+            if (err) {
+                console.log(chalk.redBright(`没有发现${file}`))
+            }
+            const rex = new RegExp(preName, 'g')
+            const str = data.toString()
+            const resultStr = str.replace(rex, name)
+            fs.createWriteStream(file).write(resultStr, 'utf8', (err) => {
+                if (err) {
+                    resolve(false)
+                    console.log(chalk.redBright(`修改${file}失败`))
+                }
+                resolve(true)
+            })
+        });
+    })
+}
+
+export async function replacePreName(path, preName) {
     const arr = path.split('/')
-    const name = arr[arr.length-1]
-    if( name == preName || !name || !preName){
-        return 
+    const name = arr[arr.length - 1]
+    if (name == preName || !name || !preName) {
+        return
     }
     await editAppStyle(path, name, preName)
     await editAppData(path, name, preName)
+    return
+}
+
+export async function replaceHookAppName(path, preName) {
+    const arr = path.split('/')
+    const name = arr[arr.length - 1]
+    if (name == preName || !name || !preName) {
+        return
+    }
+    await replaceFileAppName(`./${path}/index.js`, name, preName)
+    await replaceFileAppName(`./${path}/app.js`, name, preName)
+    await replaceFileAppName(`./${path}/style.less`, name, preName)
+    await replaceFileAppName(`./${path}/mock.js`, path, `testTools/ttk-hook-app-init`)
+    await replaceFileAppName(`./${path}/webapi.js`, path, `testTools/ttk-hook-app-init`)
     return
 }
