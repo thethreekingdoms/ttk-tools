@@ -1893,8 +1893,8 @@ locate-path@^3.0.0:
     path-exists "^3.0.0"
 
 lodash@^4.17.4:
-  version "4.17.11"
-  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.11.tgz#b39ea6229ef607ecd89e2c8df12536891cac9b8d"
+  version "4.17.19"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.19.tgz#e48ddedbe30b3321783c5b4301fbd353bc1e4a4b"
 
 loose-envify@^1.0.0:
   version "1.4.0"
@@ -2819,9 +2819,9 @@ ttk-app-init-demo@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/ttk-app-init-demo/-/ttk-app-init-demo-2.0.1.tgz#3e2be7c9f3bd0738e5338b367006053b97505481"
 
-"ttk-hook-app-init@git+https://github.com/thethreekingdoms/ttk-hook-app-init.git":
+ttk-hook-app-init@^0.0.1:
   version "0.0.1"
-  resolved "git+https://github.com/thethreekingdoms/ttk-hook-app-init.git#30b5cb023b466e55a79d20d3e5cf838bcc284409"
+  resolved "https://registry.yarnpkg.com/ttk-hook-app-init/-/ttk-hook-app-init-0.0.1.tgz#f9069644944ecc757f08e0596a581eb63a6f6fa7"
 
 tunnel-agent@^0.6.0:
   version "0.6.0"
