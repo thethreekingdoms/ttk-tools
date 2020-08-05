@@ -12,19 +12,22 @@ import init from './init'
 import serverCreateParent from './serverCreateParent'
 import serverAddMicroservice from './serverAddMicroservice'
 import resetModule from './resetModule'
+import ui from './ui'
 
-export default { website, 
-    clone, 
-    compile, 
-    createApp, 
-    createModule, 
-    delModule, 
-    update, 
-    cloneApps, 
-    reset, 
-    rewrite, 
+export default {
+    website,
+    clone,
+    compile,
+    createApp,
+    createModule,
+    delModule,
+    update,
+    cloneApps,
+    reset,
+    rewrite,
     init,
+    ui,
     serverCreateParent,
-    serverAddMicroservice, 
+    serverAddMicroservice,
     resetModule
 }

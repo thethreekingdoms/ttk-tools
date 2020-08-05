@@ -1,6 +1,6 @@
 {
   "name": "ttk-tool",
-  "version": "2.0.12",
+  "version": "2.1.0",
   "description": "```\r sudo npm i -g ttk-tool\r ```\r ###创建website",
   "main": "index.js",
   "scripts": {
@@ -8,8 +8,8 @@
     "commit": "git add . && git commit -m 'ttk' &&  git push -u origin master",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "jeffycai",
+  "license": "MIT",
   "bin": {
     "ttk": "bin/ttk.js"
   },
