@@ -1563,8 +1563,8 @@ inherits@2, inherits@^2.0.1, inherits@^2.0.3, inherits@~2.0.3:
   resolved "https://registry.yarnpkg.com/inherits/-/inherits-2.0.3.tgz#633c2c83e3da42a502f52466022480f4208261de"
 
 ini@~1.3.0:
-  version "1.3.5"
-  resolved "https://registry.yarnpkg.com/ini/-/ini-1.3.5.tgz#eee25f56db1c9ec6085e0c22778083f596abf927"
+  version "1.3.7"
+  resolved "https://registry.yarnpkg.com/ini/-/ini-1.3.7.tgz#a09363e1911972ea16d7a8851005d84cf09a9a84"
 
 invariant@^2.2.2:
   version "2.2.4"
@@ -2819,9 +2819,9 @@ ttk-app-init-demo@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/ttk-app-init-demo/-/ttk-app-init-demo-2.0.1.tgz#3e2be7c9f3bd0738e5338b367006053b97505481"
 
-"ttk-hook-app-init@git+https://github.com/thethreekingdoms/ttk-hook-app-init.git":
+ttk-hook-app-init@^0.0.1:
   version "0.0.1"
-  resolved "git+https://github.com/thethreekingdoms/ttk-hook-app-init.git#30b5cb023b466e55a79d20d3e5cf838bcc284409"
+  resolved "https://registry.yarnpkg.com/ttk-hook-app-init/-/ttk-hook-app-init-0.0.1.tgz#f9069644944ecc757f08e0596a581eb63a6f6fa7"
 
 tunnel-agent@^0.6.0:
   version "0.6.0"
