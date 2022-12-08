@@ -2355,8 +2355,8 @@ punycode@^2.1.0:
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-2.1.1.tgz#b58b010ac40c22c5657616c8d2c2c02c7bf479ec"
 
 qs@~6.5.2:
-  version "6.5.2"
-  resolved "https://registry.yarnpkg.com/qs/-/qs-6.5.2.tgz#cb3ae806e8740444584ef154ce8ee98d403f3e36"
+  version "6.5.3"
+  resolved "https://registry.yarnpkg.com/qs/-/qs-6.5.3.tgz#3aeeffc91967ef6e35c0e488ef46fb296ab76aad"
 
 randomatic@^3.0.0:
   version "3.1.1"
@@ -2819,9 +2819,9 @@ ttk-app-init-demo@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/ttk-app-init-demo/-/ttk-app-init-demo-2.0.1.tgz#3e2be7c9f3bd0738e5338b367006053b97505481"
 
-"ttk-hook-app-init@git+https://github.com/thethreekingdoms/ttk-hook-app-init.git":
+ttk-hook-app-init@^0.0.1:
   version "0.0.1"
-  resolved "git+https://github.com/thethreekingdoms/ttk-hook-app-init.git#30b5cb023b466e55a79d20d3e5cf838bcc284409"
+  resolved "https://registry.yarnpkg.com/ttk-hook-app-init/-/ttk-hook-app-init-0.0.1.tgz#f9069644944ecc757f08e0596a581eb63a6f6fa7"
 
 tunnel-agent@^0.6.0:
   version "0.6.0"
